@@ -24,9 +24,9 @@ export default function Home() {
     <div className="py-10">
       <h2 className="text-3xl font-bold mb-6">Latest Movies</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {movies.map(movie => (
-          <Link href={`/movie/${movie.id}`}>
-          <div key={movie.id} className="bg-white p-4 rounded shadow hover:bg-gray-100 cursor-pointer transition">
+      {movies.map(movie => (
+        <Link key={movie.id} href={`/movie/${movie.id}`}>
+          <div className="bg-white p-4 rounded shadow hover:bg-gray-100 cursor-pointer transition">
             <h3 className="text-xl font-semibold">{movie.title}</h3>
             <p className="text-sm text-gray-500">{movie.genre}</p>
             <p className="text-sm text-gray-600">
@@ -34,7 +34,7 @@ export default function Home() {
             </p>
           </div>
         </Link>
-        ))}
+      ))}
       </div>
     </div>
   )
