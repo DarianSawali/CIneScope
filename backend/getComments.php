@@ -2,30 +2,30 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
-$conn = new mysqli("localhost", "root", "", "cinescope");
-$movieId = $_GET['movie_id'] ?? null;
+require_once "db.php";
 
-if (!$movieId) {
-    echo json_encode(["error" => "Missing movie_id"]);
-    exit;
+$movie_id = $_GET["movie_id"] ?? null;
+
+if (!$movie_id) {
+  echo json_encode(["error" => "Movie ID required"]);
+  exit;
 }
 
-$sql = "SELECT comments.id, comments.content, comments.created_at, users.name AS user_name
-        FROM comments
-        JOIN users ON comments.user_id = users.id
-        WHERE comments.movie_id = ?
-        ORDER BY comments.created_at DESC";
+$sql = "SELECT c.content, u.name 
+        FROM comments c 
+        JOIN users u ON c.user_id = u.id 
+        WHERE c.movie_id = ?
+        ORDER BY c.id DESC";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $movieId);
+$stmt->bind_param("i", $movie_id);
 $stmt->execute();
-$result = $stmt->get_result();
 
+$result = $stmt->get_result();
 $comments = [];
+
 while ($row = $result->fetch_assoc()) {
-    $comments[] = $row;
+  $comments[] = $row;
 }
 
 echo json_encode($comments);
-$conn->close();
-?>

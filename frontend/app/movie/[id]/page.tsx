@@ -41,7 +41,7 @@ export default function MoviePage() {
 
       <Bookmark movieId={parseInt(id)} userId={1} />
 
-      <Comments movieId={parseInt(id)} userId={1} />
+      <Comments movieId={parseInt(id)}  />
 
     </div>
 
