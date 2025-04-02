@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+
+
 
 type Props = {
   mode: "login" | "signup";
 };
 
 const AuthForm = ({ mode }: Props) => {
+  const router = useRouter()
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,37 +17,42 @@ const AuthForm = ({ mode }: Props) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     const endpoint =
       mode === "signup"
         ? "http://localhost/CineScope/backend/signup.php"
         : "http://localhost/CineScope/backend/login.php";
-
+  
     const payload =
       mode === "signup"
         ? { name, email, password }
         : { email, password };
-
+  
     try {
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-
+  
       const data = await res.json();
-
+  
       if (data.error) {
         setMessage(`❌ ${data.error}`);
       } else {
         setMessage(`✅ ${data.message || "Login successful"}`);
-        // You could store user info here
-        // localStorage.setItem("user", JSON.stringify(data.user));
+  
+        if (data.user?.id) {
+          localStorage.setItem("user_id", data.user.id.toString());
+        }
+  
+        router.push("/");
       }
     } catch (err) {
       setMessage("❌ Server error");
     }
   };
+  
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
