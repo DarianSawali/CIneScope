@@ -1,5 +1,6 @@
 'use client'
 import Image from "next/image";
+import Link from 'next/link';
 import { useEffect, useState } from 'react'
 
 type Movie = {
@@ -24,13 +25,15 @@ export default function Home() {
       <h2 className="text-3xl font-bold mb-6">Latest Movies</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {movies.map(movie => (
-          <div key={movie.id} className="bg-white p-4 rounded shadow">
+          <Link href={`/movie/${movie.id}`}>
+          <div key={movie.id} className="bg-white p-4 rounded shadow hover:bg-gray-100 cursor-pointer transition">
             <h3 className="text-xl font-semibold">{movie.title}</h3>
             <p className="text-sm text-gray-500">{movie.genre}</p>
             <p className="text-sm text-gray-600">
               Released: {new Date(movie.release_date).toDateString()}
             </p>
           </div>
+        </Link>
         ))}
       </div>
     </div>
