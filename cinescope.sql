@@ -25,15 +25,53 @@ USE `cinescope`;
 
 -- --------------------------------------------------------
 
+CREATE TABLE `users` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `genre_preference` VARCHAR(100),
+  `role` ENUM('member','admin') NOT NULL DEFAULT 'member',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+CREATE TABLE `movies` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(255) NOT NULL,
+  `cast` TEXT NOT NULL,
+  `language` VARCHAR(100) NOT NULL,
+  `imdb_url` VARCHAR(255) NOT NULL,
+  `genre` TEXT NOT NULL,
+  `overview` TEXT NOT NULL,
+  `release_date` DATE NOT NULL,
+  `runtime` INT NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+CREATE TABLE `lists` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_id` INT NOT NULL,
+  `movie_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_bookmark` (`user_id`, `movie_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`movie_id`) REFERENCES `movies`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 --
 -- Table structure for table `comments`
 --
 
 CREATE TABLE `comments` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `movie_id` int(11) NOT NULL,
-  `content` text NOT NULL
+  `content` text NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -42,11 +80,6 @@ CREATE TABLE `comments` (
 -- Table structure for table `lists`
 --
 
-CREATE TABLE `lists` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `movie_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -54,17 +87,6 @@ CREATE TABLE `lists` (
 -- Table structure for table `movies`
 --
 
-CREATE TABLE `movies` (
-  `id` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `cast` text NOT NULL,
-  `language` varchar(100) NOT NULL,
-  `imdb_url` varchar(255) NOT NULL,
-  `genre` text NOT NULL,
-  `overview` text NOT NULL,
-  `release_date` date NOT NULL,
-  `runtime` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `movies`
@@ -594,46 +616,7 @@ CREATE TABLE `ratings` (
 
 -- --------------------------------------------------------
 
---
--- Table structure for table `users`
---
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `genre_preference` varchar(100) DEFAULT NULL,
-  `role` enum('member','admin') NOT NULL DEFAULT 'member'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `comments`
---
-ALTER TABLE `comments`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `movie_id` (`movie_id`);
-
---
--- Indexes for table `lists`
---
-ALTER TABLE `lists`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `movie_id` (`movie_id`);
-
---
--- Indexes for table `movies`
---
-ALTER TABLE `movies`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `ratings`
 --
 ALTER TABLE `ratings`
@@ -642,23 +625,12 @@ ALTER TABLE `ratings`
   ADD KEY `movie_id` (`movie_id`);
 
 --
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
 
---
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `comments`
---
-ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
 -- AUTO_INCREMENT for table `lists`
 --
 ALTER TABLE `lists`
@@ -694,13 +666,7 @@ ALTER TABLE `comments`
   ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `lists`
---
-ALTER TABLE `lists`
-  ADD CONSTRAINT `lists_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `lists_ibfk_2` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`) ON DELETE CASCADE;
 
---
 -- Constraints for table `ratings`
 --
 ALTER TABLE `ratings`

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
+import Comments from '@/components/Comments'
+import Bookmark from '@/components/Bookmark'
 
 type Movie = {
   id: number
@@ -36,7 +38,14 @@ export default function MoviePage() {
       <p className="mb-6">{movie.overview}</p>
       <p className="text-sm text-gray-500">Language: {movie.language}</p>
       <p className="text-sm text-gray-500">Released: {new Date(movie.release_date).toDateString()}</p>
+
+      <Bookmark movieId={parseInt(id)} userId={1} />
+
+      <Comments movieId={parseInt(id)} userId={1} />
+
     </div>
+
+    
   )
 }
 
