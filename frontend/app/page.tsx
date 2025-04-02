@@ -7,7 +7,6 @@ type Movie = {
   id: number
   title: string
   genre: string
-  release_date: string
 }
 
 export default function Home() {
@@ -29,9 +28,7 @@ export default function Home() {
           <div className="bg-white p-4 rounded shadow hover:bg-gray-100 cursor-pointer transition">
             <h3 className="text-xl font-semibold text-black">{movie.title}</h3>
             <p className="text-sm text-gray-500">{movie.genre}</p>
-            <p className="text-sm text-gray-600">
-              Released: {new Date(movie.release_date).toDateString()}
-            </p>
+
           </div>
         </Link>
       ))}

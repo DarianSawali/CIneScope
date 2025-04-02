@@ -1,7 +1,7 @@
+'use client'
+
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-
-
 
 type Props = {
   mode: "login" | "signup";
@@ -56,13 +56,13 @@ const AuthForm = ({ mode }: Props) => {
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
-      <h2 className="text-2xl font-bold mb-4 capitalize">{mode}</h2>
+      <h2 className="text-2xl font-bold mb-4 capitalize text-black">{mode}</h2>
       <form onSubmit={handleSubmit}>
         {mode === "signup" && (
           <input
             type="text"
             placeholder="Full Name"
-            className="w-full mb-3 p-2 border rounded"
+            className="w-full mb-3 p-2 border rounded text-black"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -71,7 +71,7 @@ const AuthForm = ({ mode }: Props) => {
         <input
           type="email"
           placeholder="Email"
-          className="w-full mb-3 p-2 border rounded"
+          className="w-full mb-3 p-2 border rounded text-black"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -79,7 +79,7 @@ const AuthForm = ({ mode }: Props) => {
         <input
           type="password"
           placeholder="Password"
-          className="w-full mb-3 p-2 border rounded"
+          className="w-full mb-3 p-2 border rounded text-black"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -91,7 +91,7 @@ const AuthForm = ({ mode }: Props) => {
           {mode === "signup" ? "Sign Up" : "Log In"}
         </button>
       </form>
-      {message && <p className="mt-4 text-center">{message}</p>}
+      {message && <p className="mt-4 text-center text-black">{message}</p>}
     </div>
   );
 };

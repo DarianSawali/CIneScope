@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 
 type Movie = {
   id: number
@@ -12,38 +11,39 @@ type Movie = {
 
 export default function WatchlistPage() {
   const [bookmarks, setBookmarks] = useState<Movie[]>([])
-  const userId = typeof window !== 'undefined' ? localStorage.getItem('user_id') : null
+  const [userId, setUserId] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!userId) return
+    const id = localStorage.getItem('user_id')
+    setUserId(id)
 
-    fetch(`http://localhost/CineScope/backend/getBookmarks.php?user_id=${userId}`)
-      .then(res => res.json())
-      .then(data => setBookmarks(data))
-  }, [userId])
+    if (id) {
+      fetch(`http://localhost/CineScope/backend/getBookmarks.php?user_id=${id}`)
+        .then(res => res.json())
+        .then(data => setBookmarks(data))
+        .catch(err => console.error('Error loading bookmarks:', err))
+    }
+  }, [])
 
   if (!userId) {
-    return <p className="p-8">Please <Link href="/login" className="text-blue-600 underline">log in</Link> to view your watchlist.</p>
+    return <p className="text-center mt-10">Please log in to view your watchlist.</p>
   }
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-4">Your Watchlist</h1>
+    <div className="py-10">
+      <h2 className="text-2xl font-bold mb-6">🎬 Your Bookmarked Movies</h2>
       {bookmarks.length === 0 ? (
-        <p>No bookmarks yet.</p>
+        <p>You haven’t bookmarked any movies yet.</p>
       ) : (
-        <ul className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {bookmarks.map(movie => (
-            <li key={movie.id}>
-              <Link href={`/movie/${movie.id}`}>
-                <div className="bg-white p-4 rounded shadow hover:bg-gray-100">
-                  <h2 className="text-xl font-semibold">{movie.title}</h2>
-                  <p className="text-sm text-gray-500">{movie.genre} | {new Date(movie.release_date).toDateString()}</p>
-                </div>
-              </Link>
-            </li>
+            <div key={movie.id} className="bg-white p-4 rounded shadow">
+              <h3 className="text-lg font-semibold text-black">{movie.title}</h3>
+              <p className="text-sm text-gray-500">{movie.genre}</p>
+
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   )
