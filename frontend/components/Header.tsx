@@ -27,6 +27,7 @@ export default function Header() {
             <>
                 <Link href="/signup" className="hover:underline text-black">Sign Up</Link>
                 <Link href="/login" className="hover:underline text-black">Login</Link>
+                <Link href="/search" className="hover:underline text-black">Search</Link>
             </>
             ) : (
             <>
