@@ -23,11 +23,11 @@ export default function Header() {
         <h1 className="text-xl font-bold text-blue-600">🎬 CineScope</h1>
         <nav className="space-x-4">
           <Link href="/" className="hover:underline text-black">Home</Link>
+          <Link href="/search" className="hover:underline text-black">Search</Link>
           {!isLoggedIn ? (
             <>
                 <Link href="/signup" className="hover:underline text-black">Sign Up</Link>
                 <Link href="/login" className="hover:underline text-black">Login</Link>
-                <Link href="/search" className="hover:underline text-black">Search</Link>
             </>
             ) : (
             <>
