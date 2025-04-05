@@ -42,6 +42,10 @@ export default function Header() {
                 <AiOutlineHeart size={24}/> 
               </Link>
 
+              <Link href="/account" className="text-white hover:underline">
+                Account
+              </Link>
+
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-1 text-red-500 hover:underline"
