@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
+// available genre options
 const GENRES = [
   "Action", "Adventure", "Animation", "Biography", "Comedy", "Crime",
   "Documentary", "Drama", "Fantasy", "History", "Horror", "Musical",
@@ -21,12 +22,14 @@ export default function AccountPage() {
         .then(res => res.json())
         .then(data => {
           if (data.genre_preference) {
+            // get user genre preference
             setSelectedGenres(data.genre_preference.split(',').map((s: string) => s.trim()))
           }
         })
     }
   }, [])
 
+  // set genre option to be checked 
   const toggleGenre = (genre: string) => {
     setSelectedGenres(prev =>
       prev.includes(genre)
@@ -37,6 +40,7 @@ export default function AccountPage() {
 
   const handleSave = async () => {
     if (!userId) return
+    // join selected genre preference
     const genre_preference = selectedGenres.join(',')
 
     const res = await fetch('http://localhost/CineScope/backend/updatePreference.php', {
@@ -47,9 +51,9 @@ export default function AccountPage() {
 
     const data = await res.json()
     if (data.success) {
-      setMessage("✅ Preferences updated!")
+      setMessage("Preferences updated!")
     } else {
-      setMessage("❌ Failed to update preferences.")
+      setMessage("Failed to update preferences.")
     }
   }
 
