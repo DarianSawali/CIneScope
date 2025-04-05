@@ -40,7 +40,7 @@ const AuthForm = ({ mode }: Props) => {
       if (data.error) {
         setMessage(`${data.error}`);
       } else {
-        setMessage(`✅ ${data.message || "Login successful"}`);
+        setMessage(`${data.message || "Login successful"}`);
   
         if (data.user?.id) {
           localStorage.setItem("user_id", data.user.id.toString());
