@@ -13,7 +13,7 @@ export default function MovieCard({ title }: Props) {
 
   useEffect(() => {
     const fetchPoster = async () => {
-      const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY
+      const apiKey = process.env.NEXT_PUBLIC_TMDB_KEY
       const query = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(title)}`
 
       try {
@@ -32,12 +32,12 @@ export default function MovieCard({ title }: Props) {
   }, [title])
 
   return (
-    <div className="relative group rounded-2xl overflow-hidden shadow hover:shadow-lg transition duration-400">
+    <div className="relative group rounded-2xl overflow-hidden shadow hover:shadow-lg transition duration-400 hover:scale-105">
       <Image
         src={
           posterPath
             ? `https://image.tmdb.org/t/p/w500${posterPath}`
-            : "/fallback.jpg"
+            : "/fallback.png"
         }
         alt={title}
         width={500}

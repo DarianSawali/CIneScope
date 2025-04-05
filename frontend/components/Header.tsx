@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { AiFillHome, AiOutlineSearch, AiOutlineUser, AiOutlineHeart, AiOutlineLogout } from 'react-icons/ai'
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -18,25 +19,37 @@ export default function Header() {
   }
 
   return (
-    <header className="bg-white shadow p-4 mb-6">
-      <div className="max-w-6xl mx-auto flex justify-between">
-        <h1 className="text-xl font-bold text-blue-600">🎬 CineScope</h1>
-        <nav className="space-x-4">
-          <Link href="/" className="hover:underline text-black">Home</Link>
-          <Link href="/search" className="hover:underline text-black">Search</Link>
+    <header className="bg-zinc-900 shadow p-4 mb-6 py-8">
+      <div className="max-w-[100rem] mx-auto flex justify-between items-center px-4">
+        <h1 className="text-xl font-bold text-white">CINESCOPE</h1>
+
+        <nav className="flex items-center gap-6">
+          <Link href="/" className="flex items-center gap-1 text-white">
+            <AiFillHome size={24} /> 
+          </Link>
+
+          <Link href="/search" className="flex items-center gap-1 text-white hover:underline">
+            <AiOutlineSearch size={24}/> 
+          </Link>
+
           {!isLoggedIn ? (
+            <Link href="/signup" className="flex items-center gap-1 text-white hover:underline">
+              <AiOutlineUser size={24}/> 
+            </Link>
+          ) : (
             <>
-                <Link href="/signup" className="hover:underline text-black">Sign Up</Link>
-                <Link href="/login" className="hover:underline text-black">Login</Link>
+              <Link href="/watchlist" className="flex items-center gap-1 text-white hover:underline">
+                <AiOutlineHeart size={24}/> 
+              </Link>
+
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-1 text-red-500 hover:underline"
+              >
+                <AiOutlineLogout size={24}/> 
+              </button>
             </>
-            ) : (
-            <>
-                <Link href="/watchlist" className="hover:underline text-black">Bookmarks</Link>
-                <button onClick={handleLogout} className="hover:underline text-red-600">
-                Logout
-                </button>
-            </>
-            )}
+          )}
         </nav>
       </div>
     </header>

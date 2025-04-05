@@ -19,7 +19,7 @@ export default function Bookmark({ movieId, userId }: { movieId: number; userId:
     <button
       onClick={handleBookmark}
       className={`mt-6 px-4 py-2 rounded ${
-        bookmarked ? 'bg-green-600' : 'bg-gray-800'
+        bookmarked ? 'bg-green-600' : 'bg-slate-400 hover:bg-slate-700'
       } text-white`}
       disabled={bookmarked}
     >
