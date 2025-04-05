@@ -38,7 +38,7 @@ const AuthForm = ({ mode }: Props) => {
       const data = await res.json();
   
       if (data.error) {
-        setMessage(`❌ ${data.error}`);
+        setMessage(`${data.error}`);
       } else {
         setMessage(`✅ ${data.message || "Login successful"}`);
   

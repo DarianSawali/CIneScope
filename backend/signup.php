@@ -1,4 +1,6 @@
 <?php
+// sign-up backend
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
@@ -21,8 +23,21 @@ if (!$name || !$email || !$password) {
   exit;
 }
 
+// check if user exists already
+$check = $conn->prepare("SELECT id FROM users WHERE email = ?");
+$check->bind_param("s", $email);
+$check->execute();
+$result = $check->get_result();
+
+if ($result->num_rows > 0) {
+  echo json_encode(["error" => "User already exists"]);
+  exit;
+}
+
+// hash password
 $hashed = password_hash($password, PASSWORD_DEFAULT);
 
+// insert credentials into db
 $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
 $stmt->bind_param("sss", $name, $email, $hashed);
 
