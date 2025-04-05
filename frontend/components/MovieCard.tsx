@@ -32,7 +32,7 @@ export default function MovieCard({ title }: Props) {
   }, [title])
 
   return (
-    <div className="relative group rounded-xl overflow-hidden shadow hover:shadow-lg transition duration-300">
+    <div className="relative group rounded-2xl overflow-hidden shadow hover:shadow-lg transition duration-400">
       <Image
         src={
           posterPath
