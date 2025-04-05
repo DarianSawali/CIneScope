@@ -1,12 +1,14 @@
 'use client'
-import Image from "next/image";
-import Link from 'next/link';
-import { useEffect, useState } from 'react'
+
+import { useEffect, useState } from "react"
+import MovieCard from "@/components/MovieCard"
+import Link from "next/link"
 
 type Movie = {
   id: number
   title: string
-  genre: string
+  release_date: string
+  poster_path: string
 }
 
 export default function Home() {
@@ -20,19 +22,17 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="py-10">
-      <h2 className="text-3xl font-bold mb-6">Latest Movies</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      {movies.map(movie => (
-        <Link key={movie.id} href={`/movie/${movie.id}`}>
-          <div className="bg-white p-4 rounded shadow hover:bg-gray-100 cursor-pointer transition">
-            <h3 className="text-xl font-semibold text-black">{movie.title}</h3>
-            <p className="text-sm text-gray-500">{movie.genre}</p>
-
-          </div>
-        </Link>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {movies
+        .sort((a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime())
+        .map(movie => (
+          <Link key={movie.id} href={`/movie/${movie.id}`}>
+            <MovieCard
+              title={movie.title}
+              // release_date={movie.release_date}
+            />
+          </Link>
       ))}
-      </div>
     </div>
   )
 }
