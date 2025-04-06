@@ -40,13 +40,16 @@ export default function SearchPage() {
     if (searchTerm) url.searchParams.append('title', searchTerm)
     if (selectedGenre) url.searchParams.append('genre', selectedGenre)
     if (selectedLanguage) url.searchParams.append('language', selectedLanguage)
-
+  
     fetch(url.href)
       .then(res => res.json())
       .then(async data => {
-        // Enrich with TMDb poster
+        // Limit results if no filters
+        const isUnfiltered = !searchTerm && !selectedGenre && !selectedLanguage
+        const limitedData = isUnfiltered ? data.slice(0, 15) : data
+  
         const enriched = await Promise.all(
-          data.map(async (movie: any) => {
+          limitedData.map(async (movie: any) => {
             let poster_path = ''
             try {
               const tmdbRes = await fetch(
@@ -57,7 +60,7 @@ export default function SearchPage() {
             } catch (err) {
               console.error('TMDb error:', err)
             }
-
+  
             return {
               ...movie,
               release_date: movie.release_date || '2000-01-01',
@@ -67,7 +70,7 @@ export default function SearchPage() {
             }
           })
         )
-
+  
         setMovies(enriched)
       })
       .catch(err => console.error('Search fetch error:', err))
@@ -157,6 +160,7 @@ export default function SearchPage() {
           <Link key={movie.id} href={`/movie/${movie.id}`}>
             <MovieCard
               title={movie.title}
+              release_date={movie.release_date}
             />
           </Link>
         ))}

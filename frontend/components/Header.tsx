@@ -2,8 +2,9 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { AiFillHome, AiOutlineSearch, AiOutlineUser, AiOutlineHeart, AiOutlineLogout } from 'react-icons/ai'
+import { AiFillHome, AiOutlineSearch, AiOutlineUser } from 'react-icons/ai'
 import { MdLogout} from 'react-icons/md'
+import { GoHome} from 'react-icons/go'
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -26,7 +27,7 @@ export default function Header() {
 
         <nav className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-1 text-white">
-            <AiFillHome size={24} /> 
+            <GoHome size={25} /> 
           </Link>
 
           <Link href="/search" className="flex items-center gap-1 text-white hover:underline">
