@@ -164,12 +164,13 @@ export default function SearchPage() {
       {/* Movie Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {movies.map(movie => (
-          <Link key={movie.id} href={`/movie/${movie.id}`}>
+          // <Link key={movie.id} href={`/movie/${movie.id}`}>
             <MovieCard
+              key={movie.id}
+              id={movie.id}
               title={movie.title}
               release_date={movie.release_date}
             />
-          </Link>
         ))}
       </div>
     </div>

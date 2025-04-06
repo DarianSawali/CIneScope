@@ -47,38 +47,36 @@ export default function Home() {
 
   return (
     <div className="py-10">
-      {userId && recommended.length > 0 && (
-        <>
-          <h2 className="text-3xl font-bold mb-6">For You</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12">
-            {recommended.map(movie => (
-              <Link key={movie.id} href={`/movie/${movie.id}`}>
-                <MovieCard
-                  id={movie.id}
-                  title={movie.title}
-                  release_date={movie.release_date}
-                />
-              </Link>
-            ))}
-          </div>
-        </>
-      )}
-
-      <h2 className="text-3xl font-bold mb-6">Latest Movies</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-8">
-        {movies
-          .sort((a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime())
-          .map(movie => (
-            <Link key={movie.id} href={`/movie/${movie.id}`}>
-              <MovieCard
-                id={movie.id}
-                title={movie.title}
-                release_date={movie.release_date}
-              />
-            </Link>
-          ))}
+  {userId && recommended.length > 0 && (
+    <>
+      <h2 className="text-3xl font-bold mb-6">For You</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12">
+        {recommended.map(movie => (
+          <MovieCard
+            key={movie.id}
+            id={movie.id}
+            title={movie.title}
+            release_date={movie.release_date}
+          />
+        ))}
       </div>
-    </div>
+    </>
+  )}
+
+  <h2 className="text-3xl font-bold mb-6">Latest Movies</h2>
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-8">
+    {movies
+      .sort((a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime())
+      .map(movie => (
+        <MovieCard
+          key={movie.id}
+          id={movie.id}
+          title={movie.title}
+          release_date={movie.release_date}
+        />
+      ))}
+  </div>
+</div>
   )
 
 }
