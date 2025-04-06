@@ -24,6 +24,7 @@ export default function AccountPage() {
   const [activeTab, setActiveTab] = useState('account')
   const [bookmarks, setBookmarks] = useState<Movie[]>([])
   const [selectedGenres, setSelectedGenres] = useState<string[]>([])
+  const [currentPassword, setCurrentPassword] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState('')
@@ -60,6 +61,7 @@ export default function AccountPage() {
     )
   }
 
+  // user genre preference
   const handleGenreSave = async () => {
     if (!userId) return
     const genre_preference = selectedGenres.join(',')
@@ -74,6 +76,7 @@ export default function AccountPage() {
     setMessage(data.success ? 'Preferences updated!' : 'Failed to update preferences.')
   }
 
+  // new password and confirmed new password not matching
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!userId || password !== confirmPassword) {
@@ -81,10 +84,11 @@ export default function AccountPage() {
       return
     }
 
+    // send password details for changing
     const res = await fetch('http://localhost/CineScope/backend/changePassword.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: userId, new_password: password })
+      body: JSON.stringify({ user_id: userId, current_password: currentPassword, new_password: password })
     })
 
     const data = await res.json()
@@ -104,7 +108,7 @@ export default function AccountPage() {
           {[
             { label: "Account", key: "account" },
             { label: "Bookmarks", key: "bookmarks" },
-            { label: "Preferences", key: "preferences" },
+            { label: "Genre Preference", key: "preferences" },
             { label: "Security", key: "security" },
           ].map(tab => (
             <button
@@ -182,6 +186,14 @@ export default function AccountPage() {
                 className="flex flex-col items-center w-full max-w-md gap-1 p-6 bg-transparent border rounded-xl border-white shadow-md shadow-white"
               >
                 <h2 className="text-2xl font-bold mb-6 text-white">Change Password</h2>
+                <input
+                  type="password"
+                  placeholder="Current Password"
+                  className="w-full mb-3 p-2 border rounded-lg bg-transparent text-white shadow-sm shadow-white"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  required
+                />
                 <input
                   type="password"
                   placeholder="New Password"
