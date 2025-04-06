@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { AiFillHome, AiOutlineSearch, AiOutlineUser, AiOutlineHeart, AiOutlineLogout } from 'react-icons/ai'
+import { MdLogout} from 'react-icons/md'
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -43,14 +44,14 @@ export default function Header() {
               </Link>
 
               <Link href="/account" className="text-white hover:underline">
-                Account
+                <AiOutlineUser size={24}/> 
               </Link>
 
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-1 text-red-500 hover:underline"
               >
-                <AiOutlineLogout size={24}/> 
+                <MdLogout size={26}/> 
               </button>
             </>
           )}
