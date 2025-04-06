@@ -1,8 +1,9 @@
 'use client'
 
+import $ from 'jquery'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { AiOutlineSearch} from 'react-icons/ai'
+import { AiOutlineSearch } from 'react-icons/ai'
 import MovieCard from '@/components/MovieCard'
 
 type Movie = {
@@ -37,17 +38,20 @@ export default function SearchPage() {
 
   useEffect(() => {
     const url = new URL('http://localhost/CineScope/backend/getSearch.php')
+    // append parameters to URL for GET function
     if (searchTerm) url.searchParams.append('title', searchTerm)
     if (selectedGenre) url.searchParams.append('genre', selectedGenre)
     if (selectedLanguage) url.searchParams.append('language', selectedLanguage)
-  
-    fetch(url.href)
-      .then(res => res.json())
-      .then(async data => {
-        // Limit results if no filters
+
+    // AJAX
+    $.ajax({
+      url: url.href, 
+      method: 'GET',
+      dataType: 'json',
+      success: async function (data) {
         const isUnfiltered = !searchTerm && !selectedGenre && !selectedLanguage
         const limitedData = isUnfiltered ? data.slice(0, 15) : data
-  
+
         const enriched = await Promise.all(
           limitedData.map(async (movie: any) => {
             let poster_path = ''
@@ -60,7 +64,7 @@ export default function SearchPage() {
             } catch (err) {
               console.error('TMDb error:', err)
             }
-  
+
             return {
               ...movie,
               release_date: movie.release_date || '2000-01-01',
@@ -70,10 +74,13 @@ export default function SearchPage() {
             }
           })
         )
-  
+
         setMovies(enriched)
-      })
-      .catch(err => console.error('Search fetch error:', err))
+      },
+      error: function (xhr, status, err) {
+        console.error('AJAX error:', err)
+      }
+    })
   }, [searchTerm, selectedGenre, selectedLanguage])
 
   return (
@@ -93,7 +100,7 @@ export default function SearchPage() {
             className="w-full pl-6 pr-14 py-3 rounded-full bg-transparent text-white placeholder-gray-400 border border-white focus:outline-none"
           />
           <button
-            onClick={() => {}} // You can trigger the search manually here if needed
+            onClick={() => { }} // You can trigger the search manually here if needed
             className="absolute right-1 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-full transition duration-300 outline-gray-600 hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-violet-900"
           >
             <AiOutlineSearch size={24} />
