@@ -77,7 +77,7 @@ export default function SearchPage() {
 
 
     <div className="py-10 text-white">
-      <h2 className="text-3xl font-bold mb-6">Search & Filter Movies</h2>
+      <h2 className="text-3xl font-bold mb-6 ">Search & Filter Movies</h2>
 
       <div className="py-10 flex flex-col items-center justify-center mb-8">
         {/* Search Input Group */}
@@ -87,7 +87,7 @@ export default function SearchPage() {
             placeholder="Search by title..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            className="w-full pl-6 pr-14 py-3 rounded-full bg-black text-white placeholder-gray-400 border border-gray-600 focus:outline-none"
+            className="w-full pl-6 pr-14 py-3 rounded-full bg-transparent text-white placeholder-gray-400 border border-white focus:outline-none"
           />
           <button
             onClick={() => {}} // You can trigger the search manually here if needed
@@ -102,7 +102,7 @@ export default function SearchPage() {
             <select
               value={selectedGenre}
               onChange={e => setSelectedGenre(e.target.value)}
-              className="appearance-none w-full p-3 pr-10 border border-gray-600 rounded-3xl bg-black text-white"
+              className="appearance-none w-full p-3 pr-10 border border-white rounded-3xl bg-black text-white"
             >
               <option value="">All Genres</option>
               {GENRES.map((genre, idx) => (
@@ -127,7 +127,7 @@ export default function SearchPage() {
             <select
               value={selectedLanguage}
               onChange={e => setSelectedLanguage(e.target.value)}
-              className="appearance-none w-full p-3 pr-10 border border-gray-600 rounded-3xl bg-black text-white"
+              className="appearance-none w-full p-3 pr-10 border border-white rounded-3xl bg-black"
             >
               <option value="">All Languages</option>
               {LANGUAGES.map((lang, idx) => (

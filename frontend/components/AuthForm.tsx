@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 type Props = {
   mode: "login" | "signup";
@@ -56,14 +57,20 @@ const AuthForm = ({ mode }: Props) => {
   
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
-      <h2 className="text-2xl font-bold mb-4 capitalize text-black">{mode}</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="max-w-lg md:max-w-md mx-auto mt-20 p-10 bg-transparent border rounded-xl border-white shadow-md shadow-white">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center w-full gap-1"
+      >
+        <h2 className="text-2xl font-bold mb-6 capitalize text-white ">
+          {mode}
+        </h2>
+
         {mode === "signup" && (
           <input
             type="text"
             placeholder="Full Name"
-            className="w-full mb-3 p-2 border rounded text-black"
+            className="w-full mb-3 p-2 border rounded-lg bg-transparent text-white shadow-sm shadow-white"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -72,7 +79,7 @@ const AuthForm = ({ mode }: Props) => {
         <input
           type="email"
           placeholder="Email"
-          className="w-full mb-3 p-2 border rounded text-black"
+          className="w-full mb-3 p-2 border rounded-lg bg-transparent text-white shadow-sm shadow-white"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -80,21 +87,51 @@ const AuthForm = ({ mode }: Props) => {
         <input
           type="password"
           placeholder="Password"
-          className="w-full mb-3 p-2 border rounded text-black"
+          className="w-full mb-3 p-2 border rounded-lg bg-transparent text-white shadow-sm shadow-white"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded"
+          className="w-1/2 mt-8 border border-white rounded-lg hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-violet-900 text-white py-2 transition duration-300 ease-in-out shadow-sm shadow-white"
         >
           {mode === "signup" ? "Sign Up" : "Log In"}
         </button>
       </form>
-      {message && <p className="mt-4 text-center text-black">{message}</p>}
+
+      {message && (
+      <p className="mt-4 text-center text-white">{message}</p>
+      )}
+
+      <p className="mt-6 text-sm text-white text-center">
+        {mode === "signup" ? (
+          <>
+            Already have an account?{" "}
+            <Link
+              href="/login"
+              className="text-white underline hover:text-fuchsia-400 transition"
+            >
+              Log in here
+            </Link>
+          </>
+        ) : (
+          <>
+            Don&apos;t have an account?{" "}
+            <Link
+              href="/signup"
+              className="text-white underline hover:text-fuchsia-400 transition"
+            >
+              Sign up here
+            </Link>
+          </>
+        )}
+      </p>
     </div>
+
   );
+  
 };
 
 export default AuthForm;
