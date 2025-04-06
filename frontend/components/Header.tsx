@@ -39,10 +39,6 @@ export default function Header() {
             </Link>
           ) : (
             <>
-              <Link href="/watchlist" className="flex items-center gap-1 text-white hover:underline">
-                <AiOutlineHeart size={24}/> 
-              </Link>
-
               <Link href="/account" className="text-white hover:underline">
                 <AiOutlineUser size={24}/> 
               </Link>

@@ -1,7 +1,15 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import MovieCard from '@/components/MovieCard'
+
+// Types
+type Movie = {
+  id: number
+  title: string
+  release_date: string
+  poster_path: string
+}
 
 const GENRES = [
   "Action", "Adventure", "Animation", "Biography", "Comedy", "Crime",
@@ -11,13 +19,31 @@ const GENRES = [
 
 export default function AccountPage() {
   const [userId, setUserId] = useState<number | null>(null)
+  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
+  const [activeTab, setActiveTab] = useState('account')
+  const [bookmarks, setBookmarks] = useState<Movie[]>([])
   const [selectedGenres, setSelectedGenres] = useState<string[]>([])
-  const [message, setMessage] = useState("")
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     const id = localStorage.getItem('user_id')
     if (id) {
       setUserId(parseInt(id))
+
+      fetch(`http://localhost/CineScope/backend/getUser.php?id=${id}`)
+        .then(res => res.json())
+        .then(data => {
+          setEmail(data.email || '')
+          setUsername(data.name || '')
+        })
+
+      fetch(`http://localhost/CineScope/backend/getBookmarks.php?user_id=${id}`)
+        .then(res => res.json())
+        .then(data => setBookmarks(data))
+
       fetch(`http://localhost/CineScope/backend/getPreference.php?user_id=${id}`)
         .then(res => res.json())
         .then(data => {
@@ -30,13 +56,11 @@ export default function AccountPage() {
 
   const toggleGenre = (genre: string) => {
     setSelectedGenres(prev =>
-      prev.includes(genre)
-        ? prev.filter(g => g !== genre)
-        : [...prev, genre]
+      prev.includes(genre) ? prev.filter(g => g !== genre) : [...prev, genre]
     )
   }
 
-  const handleSave = async () => {
+  const handleGenreSave = async () => {
     if (!userId) return
     const genre_preference = selectedGenres.join(',')
 
@@ -47,45 +71,145 @@ export default function AccountPage() {
     })
 
     const data = await res.json()
-    setMessage(data.success ? "✅ Preferences updated!" : "❌ Failed to update preferences.")
+    setMessage(data.success ? 'Preferences updated!' : 'Failed to update preferences.')
+  }
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!userId || password !== confirmPassword) {
+      setMessage("Passwords do not match.")
+      return
+    }
+
+    const res = await fetch('http://localhost/CineScope/backend/changePassword.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: userId, new_password: password })
+    })
+
+    const data = await res.json()
+    setMessage(data.success ? 'Password updated!' : 'Failed to update password.')
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('user_id')
+    window.location.href = '/'
   }
 
   return (
-    <div className="max-w-3xl mx-auto py-10 px-6 text-white">
-      <h2 className="text-3xl font-bold mb-6">Account Settings</h2>
-
-      <section className="mb-10">
-        <h3 className="text-xl font-semibold mb-4">Genre Preferences</h3>
-        <p className="mb-2 text-sm">Select your preferred genres:</p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
-          {GENRES.map((genre, idx) => (
-            <label key={idx} className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={selectedGenres.includes(genre)}
-                onChange={() => toggleGenre(genre)}
-              />
-              <span>{genre}</span>
-            </label>
+    <div className="max-w-6xl mx-auto py-10 px-4 text-white">
+      <div className="flex flex-col md:flex-row gap-8">
+        {/* Sidebar Tabs */}
+        <div className="w-full flex flex-col gap-4 md:w-1/4 border-r border-white pr-4 space-y-4">
+          {[
+            { label: "Account", key: "account" },
+            { label: "Bookmarks", key: "bookmarks" },
+            { label: "Preferences", key: "preferences" },
+            { label: "Security", key: "security" },
+          ].map(tab => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`w-4/5 text-left pb-1 border-b-2 transition duration-300 ${
+                activeTab === tab.key
+                  ? "text-white border-white"
+                  : "text-gray-400 border-transparent hover:text-fuchsia-400"
+              }`}
+            >
+              {tab.label}
+            </button>
           ))}
+
+          <button
+            onClick={handleLogout}
+            className="w-full text-left text-red-500 hover:text-red-400 hover:underline transition duration-300"
+          >
+            Logout
+          </button>
         </div>
 
-        <button
-          onClick={handleSave}
-          className="px-6 py-2 border border-white bg-transparent hover:bg-gradient-to-r rounded-lg hover:from-fuchsia-600 hover:to-violet-900 hover:opacity-90 transition"
-        >
-          Save Preferences
-        </button>
+        {/* Content Section */}
+        <div className="w-full md:w-3/4">
+          {activeTab === 'account' && (
+            <div>
+              <h2 className="text-2xl font-bold mb-4">Account Info</h2>
+              <p><span className="font-semibold">Email:</span> {email}</p>
+              <p><span className="font-semibold">Username:</span> {username}</p>
+            </div>
+          )}
 
-        {message && <p className="mt-4 text-sm text-white italic">{message}</p>}
-      </section>
+          {activeTab === 'bookmarks' && (
+            <div>
+              <h2 className="text-2xl font-bold mb-4">Your Bookmarked Movies</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {bookmarks.map(movie => (
+                  <MovieCard
+                    key={movie.id}
+                    title={movie.title}
+                    release_date={movie.release_date}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
 
-      <section>
-        <h3 className="text-xl font-semibold mb-4">Your Bookmarks</h3>
-        <Link href="/watchlist" className="text-blue-300 underline hover:text-fuchsia-400 transition">
-          View Watchlist
-        </Link>
-      </section>
+          {activeTab === 'preferences' && (
+            <div>
+              <h2 className="text-2xl font-bold mb-4">Your Genre Preferences</h2>
+              <p className="mb-4">Selected: {selectedGenres.join(', ') || 'None'}</p>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-4">
+                {GENRES.map((genre, idx) => (
+                  <label key={idx} className="flex items-center gap-2 cursor-pointer text-white">
+                    <input
+                      type="checkbox"
+                      checked={selectedGenres.includes(genre)}
+                      onChange={() => toggleGenre(genre)}
+                      className="appearance-none w-5 h-5 border-1 border-white rounded-full checked:bg-gradient-to-r checked:from-fuchsia-600 checked:to-violet-900 transition duration-300"
+                    />
+                    <span>{genre}</span>
+                  </label>
+                ))}
+              </div>
+              <button onClick={handleGenreSave} className="w-1/3 mt-4 border border-white rounded-lg hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-violet-900 text-white py-2 transition duration-300 ease-in-out shadow-sm shadow-white">Save Preferences</button>
+              {message && <p className="mt-4 text-sm text-white">{message}</p>}
+            </div>
+          )}
+
+          {activeTab === 'security' && (
+            <div className="flex justify-center">
+              <form
+                onSubmit={handlePasswordChange}
+                className="flex flex-col items-center w-full max-w-md gap-1 p-6 bg-transparent border rounded-xl border-white shadow-md shadow-white"
+              >
+                <h2 className="text-2xl font-bold mb-6 text-white">Change Password</h2>
+                <input
+                  type="password"
+                  placeholder="New Password"
+                  className="w-full mb-3 p-2 border rounded-lg bg-transparent text-white shadow-sm shadow-white"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <input
+                  type="password"
+                  placeholder="Confirm Password"
+                  className="w-full mb-3 p-2 border rounded-lg bg-transparent text-white shadow-sm shadow-white"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="submit"
+                  className="w-1/2 mt-4 border border-white rounded-lg hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-violet-900 text-white py-2 transition duration-300 ease-in-out shadow-sm shadow-white"
+                >
+                  Update
+                </button>
+                {message && <p className="mt-4 text-white text-sm">{message}</p>}
+              </form>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
