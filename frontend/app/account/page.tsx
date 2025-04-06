@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import MovieCard from '@/components/MovieCard'
+import BookmarkCard from '@/components/BookmarkCard'
+
 
 // Types
 type Movie = {
@@ -147,11 +149,16 @@ export default function AccountPage() {
               <h2 className="text-2xl font-bold mb-4">Your Bookmarked Movies</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {bookmarks.map(movie => (
-                  <MovieCard
-                    key={movie.id}
-                    title={movie.title}
-                    release_date={movie.release_date}
-                  />
+                  <BookmarkCard
+                  key={movie.id}
+                  id={movie.id}
+                  title={movie.title}
+                  release_date={movie.release_date}
+                  onRemove={(id) =>
+                    setBookmarks((prev) => prev.filter((movie) => movie.id !== id))
+                  }
+                />
+                
                 ))}
               </div>
             </div>

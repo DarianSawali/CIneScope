@@ -45,14 +45,15 @@ const AuthForm = ({ mode }: Props) => {
   
         if (data.user?.id) {
           localStorage.setItem("user_id", data.user.id.toString());
-          router.push("/");
+          window.location.href = "/";
         }
-  
         
+
       }
     } catch (err) {
       setMessage("❌ Server error");
     }
+    router.push("/");
   };
   
 

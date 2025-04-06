@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import Comments from '@/components/Comments'
 import Bookmark from '@/components/Bookmark'
 import Image from 'next/image'
+import BookmarkButton from '@/components/BookmarkButton'
 
 type Movie = {
   id: number
@@ -52,65 +53,76 @@ export default function MoviePage() {
 
   return (
     <div className="max-w-6xl mx-auto py-10 px-4">
-    {/* Info Card including Poster */}
-    <div className="bg-slate-800 text-white rounded-lg shadow pb-6 mb-10">
-      {/* Poster Image */}
-      {posterPath && (
-        <img
-          src={
-            hasImageError || !posterPath
-              ? "/fallback_width.png"
-              : posterPath
-          }
-          alt={movie.title}
-          onError={() => setHasImageError(true)}
-          className="w-full h-auto rounded-lg object-cover mb-6"
-        />
-      )}
+      <div className="bg-transparent border-b border-l border-r text-white rounded-xl shadow pb-6 mb-10">
+        
+        {/* Poster Image */}
+        {posterPath && (
+          <img
+            src={hasImageError || !posterPath ? "/fallback_width.png" : posterPath}
+            alt={movie.title}
+            onError={() => setHasImageError(true)}
+            className="w-full h-auto rounded-xl object-cover mb-6"
+          />
+        )}
 
-      {/* Flex Container */}
-      <div className="flex flex-col md:flex-row md:items-stretch gap-10 p-6">
-        {/* Left Section */}
-        <div className="flex-1 max-w-2xl">
-          <h1 className="text-3xl font-bold mb-3">{movie.title}</h1>
-          <p className="text-gray-300 mb-4">{movie.overview}</p>
+        {/* Flex Container */}
+        <div className="flex flex-col md:flex-row gap-10 px-8 py-6">
 
-          {/* Cast at bottom */}
-          <div className="mt-6">
-            <p className="font-semibold text-gray-400">Cast:</p>
-            <p className="text-gray-200 italic">{movie.cast}</p>
-          </div>
-        </div>
-
-        {/* Right Section */}
-        <div className="flex flex-col justify-between text-sm text-right md:ml-auto items-end">
-          <div className="space-y-4">
-            <div>
-              <p className="text-gray-400">Language:</p>
-              <p className="font-medium text-white">{movie.language}</p>
+          {/* Left Section */}
+          <div className="flex-1 max-w-2xl">
+            {/* Title with underline */}
+            <div className="pb-4 border-b border-gray-600 mb-4">
+              <h1 className="text-3xl font-bold">{movie.title}</h1>
             </div>
-            <div>
-              <p className="text-gray-400">Release Date:</p>
-              <p className="font-medium text-white">
-                {new Date(movie.release_date).toDateString()}
-              </p>
+
+            {/* Overview */}
+            <p className="text-gray-300 mb-4">{movie.overview}</p>
+
+            {/* Right Section (for small screens - stacked) */}
+            <div className="md:hidden mb-6">
+              <div className="space-y-4 text-sm">
+                <div>
+                  <p className="text-gray-400">Language:</p>
+                  <p className="font-medium text-white">{movie.language}</p>
+                </div>
+                <div>
+                  <p className="text-gray-400">Release Date:</p>
+                  <p className="font-medium text-white">
+                    {new Date(movie.release_date).toDateString()}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Cast at bottom */}
+            <div className="mt-6">
+              <p className="font-semibold text-gray-400">Cast:</p>
+              <p className="text-gray-200 italic">{movie.cast}</p>
             </div>
           </div>
 
-          {/* Push Bookmark button to bottom */}
-          <div className="mt-10">
-            <Bookmark movieId={parseInt(id)} userId={1} />
+          {/* Right Section - aligned symmetrically to right */}
+          <div className="hidden md:flex flex-col justify-between text-sm text-right ml-auto w-[300px]">
+            <div className="space-y-4 mt-[52px]">
+              <div>
+                <p className="text-gray-400">Language:</p>
+                <p className="font-medium text-white">{movie.language}</p>
+              </div>
+              <div>
+                <p className="text-gray-400">Release Date:</p>
+                <p className="font-medium text-white">
+                  {new Date(movie.release_date).toDateString()}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-auto">
+              <BookmarkButton movieId={parseInt(id)} />
+            </div>
           </div>
         </div>
       </div>
     </div>
-
-    <div className='px-6'>
-      <Comments movieId={parseInt(id)} />
-    </div>
-
-    
-  </div>
-
   )
+  
 }
