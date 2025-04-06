@@ -70,7 +70,7 @@ export default function BookmarkCard({ id, title, release_date, onRemove }: Prop
       {/* Delete Button */}
       <button
         onClick={handleRemove}
-        className="absolute top-2 right-2 bg-black/70 p-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition"
+        className="absolute top-2 right-2 bg-black/70 p-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition cursor-pointer"
         title="Remove from bookmarks"
       >
         <AiFillDelete size={20} />
