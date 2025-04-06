@@ -54,6 +54,7 @@ export default function Home() {
             {recommended.map(movie => (
               <Link key={movie.id} href={`/movie/${movie.id}`}>
                 <MovieCard
+                  id={movie.id}
                   title={movie.title}
                   release_date={movie.release_date}
                 />
@@ -70,6 +71,7 @@ export default function Home() {
           .map(movie => (
             <Link key={movie.id} href={`/movie/${movie.id}`}>
               <MovieCard
+                id={movie.id}
                 title={movie.title}
                 release_date={movie.release_date}
               />

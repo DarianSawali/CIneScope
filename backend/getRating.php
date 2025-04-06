@@ -4,23 +4,24 @@ header("Content-Type: application/json");
 
 require_once "db.php";
 
-$movie_id = $_GET["movie_id"] ?? null;
+$user_id = $_GET['user_id'] ?? 0;
+$movie_id = $_GET['movie_id'] ?? 0;
 
-if (!$movie_id) {
-    echo json_encode(["error" => "Movie ID required"]);
+if (!$user_id || !$movie_id) {
+    echo json_encode(["error" => "Missing user or movie ID"]);
     exit;
 }
 
-$sql = "SELECT AVG(score) as avg_rating, COUNT(*) as total FROM ratings WHERE movie_id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $movie_id);
+$stmt = $conn->prepare("SELECT score FROM ratings WHERE user_id = ? AND movie_id = ?");
+$stmt->bind_param("ii", $user_id, $movie_id);
 $stmt->execute();
-
 $result = $stmt->get_result();
 
-$ratings = [];
-while ($row = $result->fetch_assoc()) {
-    $ratings[] = $row;
-  }
+if ($row = $result->fetch_assoc()) {
+    echo json_encode(["score" => $row['score']]);
+} else {
+    echo json_encode(["score" => null]);
+}
 
-echo json_encode($ratings);
+$stmt->close();
+$conn->close();

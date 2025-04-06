@@ -23,7 +23,10 @@ export default function Header() {
   return (
     <header className="bg-zinc-900 p-4 mb-6 py-8 shadow-2xl shadow-indigo-950">
       <div className="max-w-[100rem] mx-auto flex justify-between items-center px-4">
-        <h1 className="text-2xl font-bold text-white">CINESCOPE</h1>
+        <Link href="/" className="flex items-center gap-1 text-white">
+          <h1 className="text-2xl font-bold text-white">CINESCOPE</h1>
+        </Link>
+        
 
         <nav className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-1 text-white">

@@ -40,7 +40,7 @@ export default function MovieCard({ id, title, release_date, onRemove }: Props) 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ movie_id: id, user_id: parseInt(localStorage.getItem("user_id") || "0") }),
       })
-      onRemove?.(id) // update parent immediately
+      onRemove?.(id)
     } catch (err) {
       console.error("Failed to remove bookmark:", err)
     }
@@ -67,7 +67,6 @@ export default function MovieCard({ id, title, release_date, onRemove }: Props) 
         <p className="text-sm text-gray-300">{new Date(release_date).getFullYear()}</p>
       </div>
 
-      {/* Delete Icon */}
       {onRemove && (
         <button
           onClick={handleRemove}

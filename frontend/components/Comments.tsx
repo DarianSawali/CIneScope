@@ -42,20 +42,20 @@ export default function Comments({ movieId }: Props) {
   }
 
   return (
-    <div className="mt-10">
-      <h3 className="text-xl font-semibold mb-3">Comments</h3>
+    <div className="mt-6">
+      {/* <h3 className="text-xl font-semibold mb-3">Comments</h3> */}
 
       {userId ? (
         <div className="mb-4">
           <textarea
-            className="w-full p-2 border rounded"
+            className="w-full p-4 border rounded-xl"
             placeholder="Leave a comment..."
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
           />
           <button
             onClick={handlePost}
-            className="mt-2 px-4 py-2 bg-blue-600 text-white rounded"
+            className="mt-2 px-4 py-2 border border-white bg-transparent text-white rounded-xl hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-violet-900 transition duration-300"
           >
             Post
           </button>
@@ -69,9 +69,9 @@ export default function Comments({ movieId }: Props) {
       ) : (
         <ul className="space-y-2">
           {comments.map((comment, idx) => (
-            <li key={idx} className="border-b pb-2">
+            <li key={idx} className="border-b p-4 ">
               <strong>{comment.name}</strong>
-              <p>{comment.content}</p>
+              <p className='p-2'>{comment.content}</p>
             </li>
           ))}
         </ul>

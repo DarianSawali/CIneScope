@@ -6,6 +6,7 @@ import Comments from '@/components/Comments'
 import Bookmark from '@/components/Bookmark'
 import Image from 'next/image'
 import BookmarkButton from '@/components/BookmarkButton'
+import RatingStars from '@/components/RatingStars'
 
 type Movie = {
   id: number
@@ -26,6 +27,8 @@ export default function MoviePage() {
   const [movie, setMovie] = useState<Movie | null>(null)
   const [hasImageError, setHasImageError] = useState(false)
   const [posterPath, setPosterPath] = useState<string>('')
+  const userId = typeof window !== "undefined" ? localStorage.getItem("user_id") : null
+
 
   useEffect(() => {
     if (!id) return
@@ -72,10 +75,13 @@ export default function MoviePage() {
           <div className="flex-1 max-w-2xl">
             {/* Title with underline */}
             <div className="pb-4 border-b border-gray-600 mb-4">
-              <h1 className="text-3xl font-bold">{movie.title}</h1>
+              <div className="flex justify-between items-start gap-4 flex-wrap">
+                <h1 className="text-3xl font-bold">{movie.title}</h1>
+                <p className="text-sm text-gray-300 italic">
+                  {movie.genre.split(',').map(g => g.trim()).join(', ')}
+                </p>
+              </div>
             </div>
-
-            {/* Overview */}
             <p className="text-gray-300 mb-4">{movie.overview}</p>
 
             {/* Right Section (for small screens - stacked) */}
@@ -94,16 +100,24 @@ export default function MoviePage() {
               </div>
             </div>
 
-            {/* Cast at bottom */}
             <div className="mt-6">
               <p className="font-semibold text-gray-400">Cast:</p>
               <p className="text-gray-200 italic">{movie.cast}</p>
             </div>
           </div>
 
-          {/* Right Section - aligned symmetrically to right */}
           <div className="hidden md:flex flex-col justify-between text-sm text-right ml-auto w-[300px]">
-            <div className="space-y-4 mt-[52px]">
+            <div className="space-y-4">
+              {/* Rating section aligned right */}
+              {userId && (
+                <div className="flex flex-col items-end">
+                  <p className="text-gray-400">Your Rating:</p>
+                  <div className="mt-1">
+                    <RatingStars movieId={parseInt(id)} userId={parseInt(userId)} />
+                  </div>
+                </div>
+              )}
+
               <div>
                 <p className="text-gray-400">Language:</p>
                 <p className="font-medium text-white">{movie.language}</p>
@@ -121,6 +135,11 @@ export default function MoviePage() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-bold text-white">Comments</h2>
+        <Comments movieId={parseInt(id)} />
       </div>
     </div>
   )
