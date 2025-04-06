@@ -44,7 +44,7 @@ export default function BookmarkButton({ movieId }: Props) {
       disabled={bookmarked}
       className={`px-6 py-2 rounded-lg text-sm font-medium transition duration-300 ease-in-out shadow-sm shadow-white
         ${bookmarked
-          ? 'bg-green-600 cursor-not-allowed'
+          ? 'border border-white bg-gradient-to-r from-green-600 to-cyan-600 cursor-not-allowed'
           : 'border border-white hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-violet-900'}
       `}
     >

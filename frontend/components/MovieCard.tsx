@@ -62,7 +62,6 @@ export default function MovieCard({ id, title, release_date, onRemove }: Props) 
         />
       </Link>
 
-      {/* Overlay */}
       <div className="absolute inset-0 flex flex-col justify-end opacity-0 group-hover:opacity-100 text-white p-4 transition bg-black/40">
         <h3 className="text-lg font-bold">{title}</h3>
         <p className="text-sm text-gray-300">{new Date(release_date).getFullYear()}</p>
