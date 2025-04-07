@@ -119,17 +119,20 @@ export default function MoviePage() {
 
           <div className="hidden md:flex flex-col justify-between text-sm text-right ml-auto w-[300px]">
             <div className="space-y-4">
-              {/* Rating section aligned right */}
-              {avgRating !== null && (
-                <div className="text-sm text-white mb-2">
-                  ⭐ {avgRating} / 5 ({ratingCount} review{ratingCount !== 1 ? 's' : ''})
-                </div>
-              )}
+              
               {userId && (
                 <div className="flex flex-col items-end">
-                  <p className="text-gray-400">Your Rating:</p>
+                  <p className="text-gray-400">Ratings:</p>
                   <div className="mt-1">
                     <RatingStars movieId={parseInt(id)} userId={parseInt(userId)} />
+                  </div>
+                  <div className='py-2'>
+                    {/* Rating section aligned right */}
+                    {avgRating !== null && (
+                      <div className="text-sm text-white mb-2">
+                        {avgRating} / 5 ({ratingCount} review{ratingCount !== 1 ? 's' : ''})
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
