@@ -147,7 +147,7 @@ export default function MoviePage() {
             </div>
 
             <div className="mt-auto">
-              <BookmarkButton movieId={parseInt(id)} />
+              <BookmarkButton movieId={parseInt(id)} userId={userId ? parseInt(userId) : null} />
             </div>
           </div>
         </div>
