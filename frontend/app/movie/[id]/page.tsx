@@ -153,6 +153,39 @@ export default function MoviePage() {
               <BookmarkButton movieId={parseInt(id)} userId={userId ? parseInt(userId) : null} />
             </div>
           </div>
+          
+          {/* Small screen alternative for ratings, language, date, bookmark */}
+          <div className="md:hidden mt-8 border-t border-gray-600 pt-4 space-y-4 text-sm">
+            {userId && (
+              <div>
+                <p className="text-gray-400 font-semibold">Ratings:</p>
+                <RatingStars movieId={parseInt(id)} userId={parseInt(userId)} />
+                {avgRating !== null && (
+                  <p className="text-sm text-white mt-1">
+                    {avgRating} / 5 ({ratingCount} review{ratingCount !== 1 ? 's' : ''})
+                  </p>
+                )}
+              </div>
+            )}
+
+            <div>
+              <p className="text-gray-400">Language:</p>
+              <p className="font-medium text-white">{movie.language}</p>
+            </div>
+
+            <div>
+              <p className="text-gray-400">Release Date:</p>
+              <p className="font-medium text-white">
+                {new Date(movie.release_date).toDateString()}
+              </p>
+            </div>
+
+            <div>
+              <BookmarkButton movieId={parseInt(id)} userId={userId ? parseInt(userId) : null} />
+            </div>
+          </div>
+
+
         </div>
       </div>
 
