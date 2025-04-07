@@ -20,7 +20,6 @@ while (($row = fgetcsv($csvFile)) !== FALSE) {
     $stmt->execute();
 }
 
-// Close connections
 $stmt->close();
 $conn->close();
 fclose($csvFile);
