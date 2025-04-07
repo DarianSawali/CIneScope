@@ -1,4 +1,6 @@
 <?php
+
+// get user rating
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 

@@ -28,7 +28,6 @@ export default function MoviePage() {
   const [hasImageError, setHasImageError] = useState(false)
   const [posterPath, setPosterPath] = useState<string>('')
   const userId = typeof window !== "undefined" ? localStorage.getItem("user_id") : null
-
   // average rating
   const [avgRating, setAvgRating] = useState<number | null>(null)
   const [ratingCount, setRatingCount] = useState<number>(0)
