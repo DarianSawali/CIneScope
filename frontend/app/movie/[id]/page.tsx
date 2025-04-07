@@ -88,7 +88,7 @@ export default function MoviePage() {
             <div className="pb-4 border-b border-gray-600 mb-4">
               <div className="flex justify-between items-start gap-4 flex-wrap">
                 <h1 className="text-3xl font-bold">{movie.title}</h1>
-                <p className="text-sm text-gray-300 italic">
+                <p className="pt-1 text-sm text-gray-300 italic">
                   {movie.genre.split(',').map(g => g.trim()).join(', ')}
                 </p>
               </div>
