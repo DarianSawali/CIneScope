@@ -29,6 +29,9 @@ export default function MoviePage() {
   const [posterPath, setPosterPath] = useState<string>('')
   const userId = typeof window !== "undefined" ? localStorage.getItem("user_id") : null
 
+  // average rating
+  const [avgRating, setAvgRating] = useState<number | null>(null)
+  const [ratingCount, setRatingCount] = useState<number>(0)
 
   useEffect(() => {
     if (!id) return
@@ -50,6 +53,15 @@ export default function MoviePage() {
           setPosterPath('/fallback.jpg')
         }
       })
+
+    fetch(`http://localhost/CineScope/backend/getAverageRating.php?movie_id=${id}`)
+      .then(res => res.json())
+      .then(data => {
+        setAvgRating(data.average)
+        setRatingCount(data.count)
+      })
+      .catch(err => console.error("Average rating fetch failed:", err))
+
   }, [id])
 
   if (!movie) return <p className="text-white p-10">Loading...</p>
@@ -57,7 +69,7 @@ export default function MoviePage() {
   return (
     <div className="max-w-6xl mx-auto py-10 px-4">
       <div className="bg-transparent border-b border-l border-r text-white rounded-xl shadow pb-6 mb-10">
-        
+
         {/* Poster Image */}
         {posterPath && (
           <img
@@ -109,6 +121,11 @@ export default function MoviePage() {
           <div className="hidden md:flex flex-col justify-between text-sm text-right ml-auto w-[300px]">
             <div className="space-y-4">
               {/* Rating section aligned right */}
+              {avgRating !== null && (
+                <div className="text-sm text-white mb-2">
+                  ⭐ {avgRating} / 5 ({ratingCount} review{ratingCount !== 1 ? 's' : ''})
+                </div>
+              )}
               {userId && (
                 <div className="flex flex-col items-end">
                   <p className="text-gray-400">Your Rating:</p>
@@ -143,5 +160,5 @@ export default function MoviePage() {
       </div>
     </div>
   )
-  
+
 }
