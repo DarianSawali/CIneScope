@@ -13,10 +13,19 @@ if (!$genres) {
 
 $genre = explode(',', $genres);
 
-$sql = "SELECT * FROM movies WHERE ";
-$conditions = array_map(fn($g) => "genre LIKE ?", $genre); // genre conditions
-$sql .= implode(" OR ", $conditions);
-$sql .= " LIMIT 6"; // only 6 movies
+// WHERE clause with genres
+$conditions = array_map(fn($g) => "m.genre LIKE ?", $genre);
+$whereClause = implode(" OR ", $conditions);
+
+$sql = "
+  SELECT m.*, ROUND(AVG(r.score), 2) AS average_rating
+  FROM movies m
+  LEFT JOIN ratings r ON m.id = r.movie_id
+  WHERE $whereClause
+  GROUP BY m.id
+  ORDER BY average_rating DESC
+  LIMIT 6
+";
 
 $stmt = $conn->prepare($sql);
 
