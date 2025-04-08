@@ -1,5 +1,5 @@
 <?php
-// 
+// retrieve user credentials for account management page
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
@@ -13,6 +13,7 @@ if (!$user_id) {
   exit;
 }
 
+// retrieve username and email
 $stmt = $conn->prepare("SELECT id, name, email FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
