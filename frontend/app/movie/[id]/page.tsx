@@ -20,6 +20,7 @@ type Movie = {
   poster_path?: string
 }
 
+// API to get images
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_KEY
 

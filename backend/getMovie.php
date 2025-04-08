@@ -16,6 +16,7 @@ if (!$id) {
   exit;
 }
 
+// select all attributes of movie based on its id
 $stmt = $conn->prepare("SELECT * FROM movies WHERE id = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();
