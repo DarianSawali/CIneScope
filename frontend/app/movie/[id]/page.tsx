@@ -120,22 +120,31 @@ export default function MoviePage() {
           <div className="hidden md:flex flex-col justify-between text-sm text-right ml-auto w-[300px]">
             <div className="space-y-4">
               
-              {userId && (
-                <div className="flex flex-col items-end">
-                  <p className="text-gray-400">Ratings:</p>
-                  <div className="mt-1">
-                    <RatingStars movieId={parseInt(id)} userId={parseInt(userId)} />
-                  </div>
-                  <div className='py-2'>
-                    {/* Rating section aligned right */}
-                    {avgRating !== null && (
-                      <div className="text-sm text-white mb-2">
-                        {avgRating} / 5 ({ratingCount} review{ratingCount !== 1 ? 's' : ''})
-                      </div>
-                    )}
-                  </div>
-                </div>
+            <div className="flex flex-col items-end">
+              <p className="text-gray-400">Ratings:</p>
+
+              <div className="text-sm text-white mt-1 mb-2">
+                {avgRating !== null
+                  ? `${avgRating} / 5 (${ratingCount} review${ratingCount !== 1 ? 's' : ''})`
+                  : "No ratings yet"}
+              </div>
+
+              {/* Always show stars, read-only if not logged in */}
+              <div className="mt-1">
+                <RatingStars
+                  movieId={parseInt(id)}
+                  userId={userId ? parseInt(userId) : null}
+                  readonly={!userId}
+                />
+              </div>
+
+              {/* Optional login prompt */}
+              {!userId && (
+                <p className="text-xs text-gray-400 italic mt-1">
+                  Log in to rate this movie.
+                </p>
               )}
+            </div>
 
               <div>
                 <p className="text-gray-400">Language:</p>

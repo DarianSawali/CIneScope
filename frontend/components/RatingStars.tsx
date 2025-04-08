@@ -6,22 +6,24 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
 type Props = {
   movieId: number
   userId: number | null
+  readonly?: boolean
 }
 
-export default function RatingStars({ movieId, userId }: Props) {
+export default function RatingStars({ movieId, userId, readonly = false }: Props) {
   const [rating, setRating] = useState<number>(0)
   const [hovered, setHovered] = useState<number | null>(null)
 
   useEffect(() => {
-    if (!userId) return
+    if (readonly || !userId) return
+
     fetch(`http://s1046814535.online-home.ca/getRating.php?user_id=${userId}&movie_id=${movieId}`)
       .then(res => res.json())
       .then(data => setRating(data.score || 0))
       .catch(err => console.error("Error fetching rating:", err))
-  }, [movieId, userId])
+  }, [movieId, userId, readonly])
 
   const handleRating = async (score: number) => {
-    if (!userId) return
+    if (readonly || !userId) return
 
     try {
       await fetch("http://s1046814535.online-home.ca/rateMovie.php", {
@@ -37,17 +39,25 @@ export default function RatingStars({ movieId, userId }: Props) {
 
   return (
     <div className="flex gap-1 items-center">
-      {[1, 2, 3, 4, 5].map(i => (
-        <button
-          key={i}
-          onClick={() => handleRating(i)}
-          onMouseEnter={() => setHovered(i)}
-          onMouseLeave={() => setHovered(null)}
-          className="text-yellow-400"
-        >
-          {i <= (hovered ?? rating) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
-        </button>
-      ))}
+      {[1, 2, 3, 4, 5].map(i => {
+        const isFilled = i <= (hovered ?? rating)
+
+        return readonly ? (
+          <div key={i} className="text-yellow-400 cursor-default">
+            {isFilled ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
+          </div>
+        ) : (
+          <button
+            key={i}
+            onClick={() => handleRating(i)}
+            onMouseEnter={() => setHovered(i)}
+            onMouseLeave={() => setHovered(null)}
+            className="text-yellow-400"
+          >
+            {isFilled ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
+          </button>
+        )
+      })}
     </div>
   )
 }
