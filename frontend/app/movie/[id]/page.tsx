@@ -156,21 +156,25 @@ export default function MoviePage() {
             </div>
           </div>
 
-          {/* Small screen alternative for ratings, language, date, bookmark */}
           <div className="md:hidden mt-8 border-t border-gray-600 pt-4 space-y-4 text-sm">
-            {userId && (
-              <div>
-                <p className="text-gray-400 font-semibold">Ratings:</p>
-                {userId && (
-                  <RatingStars movieId={parseInt(id)} userId={parseInt(userId)} />
-                )}
-                {avgRating !== null && (
-                  <p className="text-sm text-white mt-1">
-                    {avgRating} / 5 ({ratingCount} review{ratingCount !== 1 ? 's' : ''})
-                  </p>
-                )}
-              </div>
-            )}
+            <div>
+              <p className="text-gray-400 font-semibold">Ratings:</p>
+              <RatingStars
+                movieId={parseInt(id)}
+                userId={userId ? parseInt(userId) : null}
+                readonly={!userId}
+              />
+              {avgRating !== null && (
+                <p className="text-sm text-white mt-1">
+                  {avgRating} / 5 ({ratingCount} review{ratingCount !== 1 ? 's' : ''})
+                </p>
+              )}
+              {!userId && (
+                <p className="text-xs text-gray-400 italic mt-1">
+                  Log in to rate this movie.
+                </p>
+              )}
+            </div>
 
             <div>
               <p className="text-gray-400">Language:</p>
