@@ -1,8 +1,8 @@
 <?php
-$servername = "sql101.infinityfree.com";
-$username = "if0_38696933";
-$password = "iat459webapp";
-$database = "if0_38696933_cinescope";
+$servername = "db5017620320.hosting-data.io";
+$username = "dbu3462376";
+$password = "cinescopedb123";
+$database = "dbs14101647";
 
 $conn = new mysqli($servername, $username, $password, $database);
 

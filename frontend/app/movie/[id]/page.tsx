@@ -35,7 +35,7 @@ export default function MoviePage() {
   useEffect(() => {
     if (!id) return
 
-    fetch(`http://cinescope.free.nf/getMovie.php?id=${id}`)
+    fetch(`http://s1046814535.online-home.ca/getMovie.php?id=${id}`)
       .then(res => res.json())
       .then(async (data: Movie) => {
         setMovie(data)
@@ -53,7 +53,7 @@ export default function MoviePage() {
         }
       })
 
-    fetch(`http://cinescope.free.nf/getAverageRating.php?movie_id=${id}`)
+    fetch(`http://s1046814535.online-home.ca/getAverageRating.php?movie_id=${id}`)
       .then(res => res.json())
       .then(data => {
         setAvgRating(data.average)

@@ -87,7 +87,7 @@ export default function AccountPage() {
     }
 
     // send password details for changing
-    const res = await fetch('http://cinescope.free.nf/changePassword.php', {
+    const res = await fetch('http://s1046814535.online-home.ca/changePassword.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId, current_password: currentPassword, new_password: password })
