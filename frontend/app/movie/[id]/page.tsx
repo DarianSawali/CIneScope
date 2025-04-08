@@ -79,13 +79,9 @@ export default function MoviePage() {
             className="w-full h-auto rounded-xl object-cover mb-6"
           />
         )}
-
-        {/* Flex Container */}
         <div className="flex flex-col md:flex-row gap-10 px-8 py-6">
-
-          {/* Left Section */}
           <div className="flex-1 max-w-2xl">
-            {/* Title with underline */}
+  
             <div className="pb-4 border-b border-gray-600 mb-4">
               <div className="flex justify-between items-start gap-4 flex-wrap">
                 <h1 className="text-3xl font-bold">{movie.title}</h1>
@@ -96,7 +92,6 @@ export default function MoviePage() {
             </div>
             <p className="text-gray-300 mb-4">{movie.overview}</p>
 
-            {/* Right Section (for small screens - stacked) */}
             <div className="md:hidden mb-6">
               <div className="space-y-4 text-sm">
                 <div>
@@ -120,7 +115,6 @@ export default function MoviePage() {
 
           <div className="hidden md:flex flex-col justify-between text-sm text-right ml-auto w-[300px]">
             <div className="space-y-4">
-              
             <div className="flex flex-col items-end">
               <p className="text-gray-400">Ratings:</p>
 
@@ -130,7 +124,6 @@ export default function MoviePage() {
                   : "No ratings yet"}
               </div>
 
-              {/* Always show stars, read-only if not logged in */}
               <div className="mt-1">
                 <RatingStars
                   movieId={parseInt(id)}
@@ -139,7 +132,6 @@ export default function MoviePage() {
                 />
               </div>
 
-              {/* Optional login prompt */}
               {!userId && (
                 <p className="text-xs text-gray-400 italic mt-1">
                   Log in to rate this movie.
@@ -163,20 +155,26 @@ export default function MoviePage() {
               <BookmarkButton movieId={parseInt(id)} userId={userId ? parseInt(userId) : null} />
             </div>
           </div>
-          
-          {/* Small screen alternative for ratings, language, date, bookmark */}
+
           <div className="md:hidden mt-8 border-t border-gray-600 pt-4 space-y-4 text-sm">
-            {userId && (
-              <div>
-                <p className="text-gray-400 font-semibold">Ratings:</p>
-                <RatingStars movieId={parseInt(id)} userId={parseInt(userId)} />
-                {avgRating !== null && (
-                  <p className="text-sm text-white mt-1">
-                    {avgRating} / 5 ({ratingCount} review{ratingCount !== 1 ? 's' : ''})
-                  </p>
-                )}
-              </div>
-            )}
+            <div>
+              <p className="text-gray-400 font-semibold">Ratings:</p>
+              <RatingStars
+                movieId={parseInt(id)}
+                userId={userId ? parseInt(userId) : null}
+                readonly={!userId}
+              />
+              {avgRating !== null && (
+                <p className="text-sm text-white mt-1">
+                  {avgRating} / 5 ({ratingCount} review{ratingCount !== 1 ? 's' : ''})
+                </p>
+              )}
+              {!userId && (
+                <p className="text-xs text-gray-400 italic mt-1">
+                  Log in to rate this movie.
+                </p>
+              )}
+            </div>
 
             <div>
               <p className="text-gray-400">Language:</p>
