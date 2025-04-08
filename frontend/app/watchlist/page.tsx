@@ -9,6 +9,8 @@ type Movie = {
   release_date: string
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
+
 export default function WatchlistPage() {
   const [bookmarks, setBookmarks] = useState<Movie[]>([])
   const [userId, setUserId] = useState<string | null>(null)
@@ -18,7 +20,7 @@ export default function WatchlistPage() {
     setUserId(id)
 
     if (id) {
-      fetch(`https://cinescope.info/getBookmarks.php?user_id=${id}`)
+      fetch(`${BASE_URL}/getBookmarks.php?user_id=${id}`)
         .then(res => res.json())
         .then(data => setBookmarks(data))
         .catch(err => console.error('Error loading bookmarks:', err))

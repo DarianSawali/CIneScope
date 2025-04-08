@@ -2,11 +2,13 @@
 
 import { useState } from 'react'
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
+
 export default function Bookmark({ movieId, userId }: { movieId: number; userId: number }) {
   const [bookmarked, setBookmarked] = useState(false)
 
   const handleBookmark = async () => {
-    await fetch('https://cinescope.info/addToList.php', {
+    await fetch(`${BASE_URL}/addToList.php`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId, movie_id: movieId }),

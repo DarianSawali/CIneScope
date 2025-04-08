@@ -19,6 +19,8 @@ const GENRES = [
   "Mystery", "Romance", "Sci-Fi", "Sport", "Thriller", "War", "Western"
 ]
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
+
 export default function AccountPage() {
   const [userId, setUserId] = useState<number | null>(null)
   const [email, setEmail] = useState('')
@@ -36,18 +38,18 @@ export default function AccountPage() {
     if (id) {
       setUserId(parseInt(id))
 
-      fetch(`https://cinescope.info/getUser.php?id=${id}`)
+      fetch(`${BASE_URL}/getUser.php?id=${id}`)
         .then(res => res.json())
         .then(data => {
           setEmail(data.email || '')
           setUsername(data.name || '')
         })
 
-      fetch(`https://cinescope.info/getBookmarks.php?user_id=${id}`)
+      fetch(`${BASE_URL}/getBookmarks.php?user_id=${id}`)
         .then(res => res.json())
         .then(data => setBookmarks(data))
 
-      fetch(`https://cinescope.info/getPreference.php?user_id=${id}`)
+      fetch(`${BASE_URL}/getPreference.php?user_id=${id}`)
         .then(res => res.json())
         .then(data => {
           if (data.genre_preference) {
@@ -68,7 +70,7 @@ export default function AccountPage() {
     if (!userId) return
     const genre_preference = selectedGenres.join(',')
 
-    const res = await fetch('https://cinescope.info/updatePreference.php', {
+    const res = await fetch(`${BASE_URL}/updatePreference.php`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId, genre_preference })
@@ -87,7 +89,7 @@ export default function AccountPage() {
     }
 
     // send password details for changing
-    const res = await fetch('https://cinescope.info/changePassword.php', {
+    const res = await fetch(`${BASE_URL}/changePassword.php`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId, current_password: currentPassword, new_password: password })

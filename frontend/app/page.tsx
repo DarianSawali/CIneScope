@@ -12,36 +12,38 @@ type Movie = {
   genre: string
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
+
 export default function Home() {
   const [movies, setMovies] = useState<Movie[]>([])
   const [recommended, setRecommended] = useState<Movie[]>([])
   const [userId, setUserId] = useState<number | null>(null)
 
   useEffect(() => {
-    fetch('https://cinescope.info/getMovies.php')
+    fetch(`${BASE_URL}/getMovies.php`)
       .then(res => res.json())
       .then(data => setMovies(data))
       .catch(err => console.error(err))
-
-    // check for logged-in user
+  
     const id = localStorage.getItem('user_id')
     if (id) {
       setUserId(parseInt(id))
-
-      // preferred genre of user
-      fetch(`https://cinescope.info/getPreference.php?user_id=${id}`)
+  
+      fetch(`${BASE_URL}/getPreference.php?user_id=${id}`)
         .then(res => res.json())
         .then(data => {
-          if (data.genre_preference) {
+          if (data && data.genre_preference) {
             const genres = data.genre_preference.split(',').map((g: string) => g.trim())
-
-            // fetch recommended movies based on preferred genre
-            fetch(`https://cinescope.info/getRecommended.php?genres=${genres.join(',')}`)
+  
+            fetch(`${BASE_URL}/getRecommended.php?genres=${genres.join(',')}`)
               .then(res => res.json())
-              .then(data => setRecommended(data))
+              .then(setRecommended)
               .catch(err => console.error("Failed to fetch recommended:", err))
+          } else {
+            console.warn("No genre preference set for user:", id)
           }
         })
+        .catch(err => console.error("Failed to fetch preference:", err))
     }
   }, [])
 

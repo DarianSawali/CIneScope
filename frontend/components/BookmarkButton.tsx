@@ -5,6 +5,8 @@ interface Props {
   userId: number | null
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
+
 export default function BookmarkButton({ movieId, userId }: Props) {
   const [bookmarked, setBookmarked] = useState(false)
   const [message, setMessage] = useState('')
@@ -13,7 +15,7 @@ export default function BookmarkButton({ movieId, userId }: Props) {
     const userId = localStorage.getItem("user_id")
     if (!userId) return
 
-    fetch(`https://cinescope.info/checkBookmark.php?movie_id=${movieId}&user_id=${userId}`)
+    fetch(`${BASE_URL}/checkBookmark.php?movie_id=${movieId}&user_id=${userId}`)
       .then(res => res.json())
       .then(data => setBookmarked(data.bookmarked))
       .catch(err => console.error("Error checking bookmark:", err))
@@ -29,7 +31,7 @@ export default function BookmarkButton({ movieId, userId }: Props) {
     if (bookmarked) return
 
     try {
-      const res = await fetch("https://cinescope.info/addToList.php", {
+      const res = await fetch(`${BASE_URL}/addToList.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user_id: userId, movie_id: movieId }),

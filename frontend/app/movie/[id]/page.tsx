@@ -20,6 +20,7 @@ type Movie = {
   poster_path?: string
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_KEY
 
 export default function MoviePage() {
@@ -35,7 +36,7 @@ export default function MoviePage() {
   useEffect(() => {
     if (!id) return
 
-    fetch(`https://cinescope.info/getMovie.php?id=${id}`)
+    fetch(`${BASE_URL}/getMovie.php?id=${id}`)
       .then(res => res.json())
       .then(async (data: Movie) => {
         setMovie(data)
@@ -53,7 +54,7 @@ export default function MoviePage() {
         }
       })
 
-    fetch(`https://cinescope.info/getAverageRating.php?movie_id=${id}`)
+    fetch(`${BASE_URL}/getAverageRating.php?movie_id=${id}`)
       .then(res => res.json())
       .then(data => {
         setAvgRating(data.average)

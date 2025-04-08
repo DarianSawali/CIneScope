@@ -9,6 +9,8 @@ type Props = {
   readonly?: boolean
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
+
 export default function RatingStars({ movieId, userId, readonly = false }: Props) {
   const [rating, setRating] = useState<number>(0)
   const [hovered, setHovered] = useState<number | null>(null)
@@ -16,7 +18,7 @@ export default function RatingStars({ movieId, userId, readonly = false }: Props
   useEffect(() => {
     if (readonly || !userId) return
 
-    fetch(`https://cinescope.info/getRating.php?user_id=${userId}&movie_id=${movieId}`)
+    fetch(`${BASE_URL}/getRating.php?user_id=${userId}&movie_id=${movieId}`)
       .then(res => res.json())
       .then(data => setRating(data.score || 0))
       .catch(err => console.error("Error fetching rating:", err))
@@ -26,7 +28,7 @@ export default function RatingStars({ movieId, userId, readonly = false }: Props
     if (readonly || !userId) return
 
     try {
-      await fetch("https://cinescope.info/rateMovie.php", {
+      await fetch(`${BASE_URL}/rateMovie.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user_id: userId, movie_id: movieId, score }),

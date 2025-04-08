@@ -6,6 +6,8 @@ type Props = {
   movieId: number
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
+
 export default function Comments({ movieId }: Props) {
   const [comments, setComments] = useState<{ name: string; content: string }[]>([])
   const [newComment, setNewComment] = useState("")
@@ -15,7 +17,7 @@ export default function Comments({ movieId }: Props) {
     const id = localStorage.getItem('user_id')
     setUserId(id)
 
-    fetch(`https://cinescope.info/getComments.php?movie_id=${movieId}`)
+    fetch(`${BASE_URL}/getComments.php?movie_id=${movieId}`)
       .then(res => res.json())
       .then(data => setComments(data))
   }, [movieId])
@@ -23,7 +25,7 @@ export default function Comments({ movieId }: Props) {
   const handlePost = async () => {
     if (!newComment.trim() || !userId) return
 
-    const res = await fetch("https://cinescope.info/addComment.php", {
+    const res = await fetch(`${BASE_URL}/addComment.php`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

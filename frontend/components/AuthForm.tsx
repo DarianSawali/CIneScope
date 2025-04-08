@@ -8,6 +8,8 @@ type Props = {
   mode: "login" | "signup";
 };
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
+
 const AuthForm = ({ mode }: Props) => {
   const router = useRouter()
 
@@ -21,8 +23,8 @@ const AuthForm = ({ mode }: Props) => {
   
     const endpoint =
       mode === "signup"
-        ? "https://cinescope.info/signup.php"
-        : "https://cinescope.info/login.php";
+        ? `${BASE_URL}/signup.php`
+        : `${BASE_URL}/login.php`;
   
     const payload =
       mode === "signup"
