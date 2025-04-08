@@ -1,8 +1,10 @@
 <?php
+// going to movie page
+
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
-$conn = new mysqli("localhost", "root", "", "cinescope");
+require_once "db.php";
 
 $id = $_GET['id'] ?? null;
 

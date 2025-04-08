@@ -1,13 +1,10 @@
 <?php
+// movie list for home page
+
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$dbname = 'cinescope';
-
-$conn = new mysqli($host, $user, $pass, $dbname);
+require_once "db.php";
 
 if ($conn->connect_error) {
     echo json_encode(['error' => 'Database connection failed']);
