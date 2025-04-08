@@ -7,6 +7,9 @@
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
+CREATE DATABASE `cinescope`;
+USE cinescope;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -22,6 +25,20 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
+
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `genre_preference` varchar(100) DEFAULT NULL,
+  `role` enum('member','admin') NOT NULL DEFAULT 'member'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
 
 --
 -- Table structure for table `comments`
@@ -1100,19 +1117,7 @@ INSERT INTO `ratings` (`id`, `user_id`, `movie_id`, `score`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
---
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `genre_preference` varchar(100) DEFAULT NULL,
-  `role` enum('member','admin') NOT NULL DEFAULT 'member'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
 -- Dumping data for table `users`
 --
 
