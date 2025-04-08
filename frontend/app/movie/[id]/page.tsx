@@ -119,23 +119,25 @@ export default function MoviePage() {
 
           <div className="hidden md:flex flex-col justify-between text-sm text-right ml-auto w-[300px]">
             <div className="space-y-4">
-              
-              {userId && (
-                <div className="flex flex-col items-end">
-                  <p className="text-gray-400">Ratings:</p>
+
+              <div className="flex flex-col items-end">
+                <p className="text-gray-400">Ratings:</p>
+                {/* Rating section aligned right */}
+
+                {/* Only logged-in users can rate */}
+                {userId && (
                   <div className="mt-1">
                     <RatingStars movieId={parseInt(id)} userId={parseInt(userId)} />
                   </div>
-                  <div className='py-2'>
-                    {/* Rating section aligned right */}
-                    {avgRating !== null && (
-                      <div className="text-sm text-white mb-2">
-                        {avgRating} / 5 ({ratingCount} review{ratingCount !== 1 ? 's' : ''})
-                      </div>
-                    )}
+                )}
+
+                {/* Average rating visible to everyone */}
+                {avgRating !== null && (
+                  <div className="text-sm text-white mt-2">
+                    {avgRating} / 5 ({ratingCount} review{ratingCount !== 1 ? 's' : ''})
                   </div>
-                </div>
-              )}
+                )}
+              </div>
 
               <div>
                 <p className="text-gray-400">Language:</p>
@@ -153,13 +155,15 @@ export default function MoviePage() {
               <BookmarkButton movieId={parseInt(id)} userId={userId ? parseInt(userId) : null} />
             </div>
           </div>
-          
+
           {/* Small screen alternative for ratings, language, date, bookmark */}
           <div className="md:hidden mt-8 border-t border-gray-600 pt-4 space-y-4 text-sm">
             {userId && (
               <div>
                 <p className="text-gray-400 font-semibold">Ratings:</p>
-                <RatingStars movieId={parseInt(id)} userId={parseInt(userId)} />
+                {userId && (
+                  <RatingStars movieId={parseInt(id)} userId={parseInt(userId)} />
+                )}
                 {avgRating !== null && (
                   <p className="text-sm text-white mt-1">
                     {avgRating} / 5 ({ratingCount} review{ratingCount !== 1 ? 's' : ''})
