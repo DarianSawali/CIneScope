@@ -16,7 +16,7 @@ export default function BookmarksTab() {
   useEffect(() => {
     if (!userId) return
 
-    fetch(`http://s1046814535.online-home.ca/getBookmarks.php?user_id=${userId}`)
+    fetch(`https://cinescope.info/getBookmarks.php?user_id=${userId}`)
       .then(res => res.json())
       .then(data => setBookmarks(data))
       .catch(err => console.error("Failed to load bookmarks", err))
@@ -24,7 +24,7 @@ export default function BookmarksTab() {
 
   const handleRemove = async (movieId: number) => {
     try {
-      await fetch("http://s1046814535.online-home.ca/removeFromList.php", {
+      await fetch("https://cinescope.info/removeFromList.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -18,7 +18,7 @@ export default function WatchlistPage() {
     setUserId(id)
 
     if (id) {
-      fetch(`http://s1046814535.online-home.ca/getBookmarks.php?user_id=${id}`)
+      fetch(`https://cinescope.info/getBookmarks.php?user_id=${id}`)
         .then(res => res.json())
         .then(data => setBookmarks(data))
         .catch(err => console.error('Error loading bookmarks:', err))

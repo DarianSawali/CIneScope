@@ -37,7 +37,7 @@ export default function SearchPage() {
   const [selectedLanguage, setSelectedLanguage] = useState('')
 
   useEffect(() => {
-    const url = new URL('http://s1046814535.online-home.ca/getSearch.php')
+    const url = new URL('https://cinescope.info/getSearch.php')
     // append parameters to URL for GET function
     if (searchTerm) url.searchParams.append('title', searchTerm)
     if (selectedGenre) url.searchParams.append('genre', selectedGenre)

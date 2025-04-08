@@ -16,7 +16,7 @@ export default function RatingStars({ movieId, userId, readonly = false }: Props
   useEffect(() => {
     if (readonly || !userId) return
 
-    fetch(`http://s1046814535.online-home.ca/getRating.php?user_id=${userId}&movie_id=${movieId}`)
+    fetch(`https://cinescope.info/getRating.php?user_id=${userId}&movie_id=${movieId}`)
       .then(res => res.json())
       .then(data => setRating(data.score || 0))
       .catch(err => console.error("Error fetching rating:", err))
@@ -26,7 +26,7 @@ export default function RatingStars({ movieId, userId, readonly = false }: Props
     if (readonly || !userId) return
 
     try {
-      await fetch("http://s1046814535.online-home.ca/rateMovie.php", {
+      await fetch("https://cinescope.info/rateMovie.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user_id: userId, movie_id: movieId, score }),

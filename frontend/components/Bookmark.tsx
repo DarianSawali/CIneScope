@@ -6,7 +6,7 @@ export default function Bookmark({ movieId, userId }: { movieId: number; userId:
   const [bookmarked, setBookmarked] = useState(false)
 
   const handleBookmark = async () => {
-    await fetch('http://s1046814535.online-home.ca/addToList.php', {
+    await fetch('https://cinescope.info/addToList.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId, movie_id: movieId }),
