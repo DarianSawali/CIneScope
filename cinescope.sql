@@ -7,8 +7,8 @@
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
-CREATE DATABASE `cinescope`;
-USE cinescope;
+-- CREATE DATABASE `cinescope`;
+-- USE cinescope;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;

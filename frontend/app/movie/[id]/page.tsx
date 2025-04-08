@@ -20,6 +20,7 @@ type Movie = {
   poster_path?: string
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_KEY
 
 export default function MoviePage() {
@@ -35,7 +36,7 @@ export default function MoviePage() {
   useEffect(() => {
     if (!id) return
 
-    fetch(`http://localhost/CineScope/backend/getMovie.php?id=${id}`)
+    fetch(`${BASE_URL}/getMovie.php?id=${id}`)
       .then(res => res.json())
       .then(async (data: Movie) => {
         setMovie(data)
@@ -53,7 +54,7 @@ export default function MoviePage() {
         }
       })
 
-    fetch(`http://localhost/CineScope/backend/getAverageRating.php?movie_id=${id}`)
+    fetch(`${BASE_URL}/getAverageRating.php?movie_id=${id}`)
       .then(res => res.json())
       .then(data => {
         setAvgRating(data.average)
@@ -78,13 +79,9 @@ export default function MoviePage() {
             className="w-full h-auto rounded-xl object-cover mb-6"
           />
         )}
-
-        {/* Flex Container */}
         <div className="flex flex-col md:flex-row gap-10 px-8 py-6">
-
-          {/* Left Section */}
           <div className="flex-1 max-w-2xl">
-            {/* Title with underline */}
+  
             <div className="pb-4 border-b border-gray-600 mb-4">
               <div className="flex justify-between items-start gap-4 flex-wrap">
                 <h1 className="text-3xl font-bold">{movie.title}</h1>
@@ -95,7 +92,6 @@ export default function MoviePage() {
             </div>
             <p className="text-gray-300 mb-4">{movie.overview}</p>
 
-            {/* Right Section (for small screens - stacked) */}
             <div className="md:hidden mb-6">
               <div className="space-y-4 text-sm">
                 <div>
@@ -119,25 +115,29 @@ export default function MoviePage() {
 
           <div className="hidden md:flex flex-col justify-between text-sm text-right ml-auto w-[300px]">
             <div className="space-y-4">
+            <div className="flex flex-col items-end">
+              <p className="text-gray-400">Ratings:</p>
 
-              <div className="flex flex-col items-end">
-                <p className="text-gray-400">Ratings:</p>
-                {/* Rating section aligned right */}
-
-                {/* Only logged-in users can rate */}
-                {userId && (
-                  <div className="mt-1">
-                    <RatingStars movieId={parseInt(id)} userId={parseInt(userId)} />
-                  </div>
-                )}
-
-                {/* Average rating visible to everyone */}
-                {avgRating !== null && (
-                  <div className="text-sm text-white mt-2">
-                    {avgRating} / 5 ({ratingCount} review{ratingCount !== 1 ? 's' : ''})
-                  </div>
-                )}
+              <div className="text-sm text-white mt-1 mb-2">
+                {avgRating !== null
+                  ? `${avgRating} / 5 (${ratingCount} review${ratingCount !== 1 ? 's' : ''})`
+                  : "No ratings yet"}
               </div>
+
+              <div className="mt-1">
+                <RatingStars
+                  movieId={parseInt(id)}
+                  userId={userId ? parseInt(userId) : null}
+                  readonly={!userId}
+                />
+              </div>
+
+              {!userId && (
+                <p className="text-xs text-gray-400 italic mt-1">
+                  Log in to rate this movie.
+                </p>
+              )}
+            </div>
 
               <div>
                 <p className="text-gray-400">Language:</p>

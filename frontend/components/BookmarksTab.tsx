@@ -9,6 +9,8 @@ type Movie = {
   release_date: string
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
+
 export default function BookmarksTab() {
   const [bookmarks, setBookmarks] = useState<Movie[]>([])
   const userId = typeof window !== "undefined" ? localStorage.getItem("user_id") : null
@@ -16,7 +18,7 @@ export default function BookmarksTab() {
   useEffect(() => {
     if (!userId) return
 
-    fetch(`http://localhost/CineScope/backend/getBookmarks.php?user_id=${userId}`)
+    fetch(`${BASE_URL}/getBookmarks.php?user_id=${userId}`)
       .then(res => res.json())
       .then(data => setBookmarks(data))
       .catch(err => console.error("Failed to load bookmarks", err))
@@ -24,7 +26,7 @@ export default function BookmarksTab() {
 
   const handleRemove = async (movieId: number) => {
     try {
-      await fetch("http://localhost/CineScope/backend/removeFromList.php", {
+      await fetch(`${BASE_URL}/removeFromList.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

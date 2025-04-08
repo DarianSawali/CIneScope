@@ -1,8 +1,8 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "cinescope";
+$servername = "db5017620320.hosting-data.io";
+$username = "dbu3462376";
+$password = "cinescopedb123";
+$database = "dbs14101647";
 
 $conn = new mysqli($servername, $username, $password, $database);
 

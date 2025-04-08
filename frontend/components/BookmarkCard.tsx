@@ -12,6 +12,8 @@ type Props = {
   onRemove: (id: number) => void
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
+
 export default function BookmarkCard({ id, title, release_date, onRemove }: Props) {
   const [posterPath, setPosterPath] = useState<string | null>(null)
 
@@ -38,7 +40,7 @@ export default function BookmarkCard({ id, title, release_date, onRemove }: Prop
       const userId = localStorage.getItem("user_id")
       if (!userId) return
 
-      await fetch("http://localhost/CineScope/backend/removeFromList.php", {
+      await fetch(`${BASE_URL}/removeFromList.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ movie_id: id, user_id: parseInt(userId) }),

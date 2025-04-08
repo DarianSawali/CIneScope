@@ -15,6 +15,7 @@ type Movie = {
   poster_path: string
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_KEY
 
 const GENRES = [
@@ -37,7 +38,7 @@ export default function SearchPage() {
   const [selectedLanguage, setSelectedLanguage] = useState('')
 
   useEffect(() => {
-    const url = new URL('http://localhost/CineScope/backend/getSearch.php')
+    const url = new URL(`${BASE_URL}/getSearch.php`)
     // append parameters to URL for GET function
     if (searchTerm) url.searchParams.append('title', searchTerm)
     if (selectedGenre) url.searchParams.append('genre', selectedGenre)
