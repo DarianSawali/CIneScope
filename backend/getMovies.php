@@ -2,10 +2,7 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$dbname = 'cinescope';
+require_once "db.php";
 
 $conn = new mysqli($host, $user, $pass, $dbname);
 

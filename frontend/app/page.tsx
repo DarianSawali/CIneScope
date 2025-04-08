@@ -18,7 +18,7 @@ export default function Home() {
   const [userId, setUserId] = useState<number | null>(null)
 
   useEffect(() => {
-    fetch('http://localhost/CineScope/backend/getMovies.php')
+    fetch('http://cinescope.free.nf/getMovies.php')
       .then(res => res.json())
       .then(data => setMovies(data))
       .catch(err => console.error(err))
@@ -29,14 +29,14 @@ export default function Home() {
       setUserId(parseInt(id))
 
       // preferred genre of user
-      fetch(`http://localhost/CineScope/backend/getPreference.php?user_id=${id}`)
+      fetch(`http://cinescope.free.nf/getPreference.php?user_id=${id}`)
         .then(res => res.json())
         .then(data => {
           if (data.genre_preference) {
             const genres = data.genre_preference.split(',').map((g: string) => g.trim())
 
             // fetch recommended movies based on preferred genre
-            fetch(`http://localhost/CineScope/backend/getRecommended.php?genres=${genres.join(',')}`)
+            fetch(`http://cinescope.free.nf/getRecommended.php?genres=${genres.join(',')}`)
               .then(res => res.json())
               .then(data => setRecommended(data))
               .catch(err => console.error("Failed to fetch recommended:", err))

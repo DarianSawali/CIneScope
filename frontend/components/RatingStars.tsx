@@ -14,7 +14,7 @@ export default function RatingStars({ movieId, userId }: Props) {
 
   useEffect(() => {
     if (!userId) return
-    fetch(`http://localhost/CineScope/backend/getRating.php?user_id=${userId}&movie_id=${movieId}`)
+    fetch(`http://cinescope.free.nf/getRating.php?user_id=${userId}&movie_id=${movieId}`)
       .then(res => res.json())
       .then(data => setRating(data.score || 0))
       .catch(err => console.error("Error fetching rating:", err))
@@ -24,7 +24,7 @@ export default function RatingStars({ movieId, userId }: Props) {
     if (!userId) return
 
     try {
-      await fetch("http://localhost/CineScope/backend/rateMovie.php", {
+      await fetch("http://cinescope.free.nf/rateMovie.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user_id: userId, movie_id: movieId, score }),

@@ -36,18 +36,18 @@ export default function AccountPage() {
     if (id) {
       setUserId(parseInt(id))
 
-      fetch(`http://localhost/CineScope/backend/getUser.php?id=${id}`)
+      fetch(`http://cinescope.free.nf/getUser.php?id=${id}`)
         .then(res => res.json())
         .then(data => {
           setEmail(data.email || '')
           setUsername(data.name || '')
         })
 
-      fetch(`http://localhost/CineScope/backend/getBookmarks.php?user_id=${id}`)
+      fetch(`http://cinescope.free.nf/getBookmarks.php?user_id=${id}`)
         .then(res => res.json())
         .then(data => setBookmarks(data))
 
-      fetch(`http://localhost/CineScope/backend/getPreference.php?user_id=${id}`)
+      fetch(`http://cinescope.free.nf/getPreference.php?user_id=${id}`)
         .then(res => res.json())
         .then(data => {
           if (data.genre_preference) {
@@ -68,7 +68,7 @@ export default function AccountPage() {
     if (!userId) return
     const genre_preference = selectedGenres.join(',')
 
-    const res = await fetch('http://localhost/CineScope/backend/updatePreference.php', {
+    const res = await fetch('http://cinescope.free.nf/updatePreference.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId, genre_preference })
@@ -87,7 +87,7 @@ export default function AccountPage() {
     }
 
     // send password details for changing
-    const res = await fetch('http://localhost/CineScope/backend/changePassword.php', {
+    const res = await fetch('http://cinescope.free.nf/changePassword.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId, current_password: currentPassword, new_password: password })

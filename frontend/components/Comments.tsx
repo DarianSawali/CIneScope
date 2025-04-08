@@ -15,7 +15,7 @@ export default function Comments({ movieId }: Props) {
     const id = localStorage.getItem('user_id')
     setUserId(id)
 
-    fetch(`http://localhost/CineScope/backend/getComments.php?movie_id=${movieId}`)
+    fetch(`http://cinescope.free.nf/getComments.php?movie_id=${movieId}`)
       .then(res => res.json())
       .then(data => setComments(data))
   }, [movieId])
@@ -23,7 +23,7 @@ export default function Comments({ movieId }: Props) {
   const handlePost = async () => {
     if (!newComment.trim() || !userId) return
 
-    const res = await fetch("http://localhost/CineScope/backend/addComment.php", {
+    const res = await fetch("http://cinescope.free.nf/addComment.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

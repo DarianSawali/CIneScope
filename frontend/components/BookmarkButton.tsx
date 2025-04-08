@@ -13,7 +13,7 @@ export default function BookmarkButton({ movieId, userId }: Props) {
     const userId = localStorage.getItem("user_id")
     if (!userId) return
 
-    fetch(`http://localhost/CineScope/backend/checkBookmark.php?movie_id=${movieId}&user_id=${userId}`)
+    fetch(`http://cinescope.free.nf/checkBookmark.php?movie_id=${movieId}&user_id=${userId}`)
       .then(res => res.json())
       .then(data => setBookmarked(data.bookmarked))
       .catch(err => console.error("Error checking bookmark:", err))
@@ -29,7 +29,7 @@ export default function BookmarkButton({ movieId, userId }: Props) {
     if (bookmarked) return
 
     try {
-      const res = await fetch("http://localhost/CineScope/backend/addToList.php", {
+      const res = await fetch("http://cinescope.free.nf/addToList.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user_id: userId, movie_id: movieId }),

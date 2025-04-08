@@ -21,8 +21,8 @@ const AuthForm = ({ mode }: Props) => {
   
     const endpoint =
       mode === "signup"
-        ? "http://localhost/CineScope/backend/signup.php"
-        : "http://localhost/CineScope/backend/login.php";
+        ? "http://cinescope.free.nf/signup.php"
+        : "http://cinescope.free.nf/login.php";
   
     const payload =
       mode === "signup"

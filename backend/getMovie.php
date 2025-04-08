@@ -1,10 +1,13 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
-$conn = new mysqli("localhost", "root", "", "cinescope");
-
 $id = $_GET['id'] ?? null;
+
+require_once "db.php";
 
 if (!$id) {
   echo json_encode(["error" => "Missing movie ID"]);

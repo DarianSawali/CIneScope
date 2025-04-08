@@ -38,7 +38,7 @@ export default function BookmarkCard({ id, title, release_date, onRemove }: Prop
       const userId = localStorage.getItem("user_id")
       if (!userId) return
 
-      await fetch("http://localhost/CineScope/backend/removeFromList.php", {
+      await fetch("http://cinescope.free.nf/removeFromList.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ movie_id: id, user_id: parseInt(userId) }),
