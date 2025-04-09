@@ -9,11 +9,13 @@ import { GoHome} from 'react-icons/go'
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
+  // stores user login in localStorage
   useEffect(() => {
     const userId = localStorage.getItem('user_id')
     setIsLoggedIn(!!userId)
   }, [])
 
+  // handles user logout
   const handleLogout = () => {
     localStorage.removeItem('user_id')
     setIsLoggedIn(false)

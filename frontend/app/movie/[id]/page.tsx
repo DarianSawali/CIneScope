@@ -20,7 +20,7 @@ type Movie = {
   poster_path?: string
 }
 
-// API to get images
+// API to get images and connect to the backend
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_KEY
 
@@ -30,18 +30,19 @@ export default function MoviePage() {
   const [hasImageError, setHasImageError] = useState(false)
   const [posterPath, setPosterPath] = useState<string>('')
   const userId = typeof window !== "undefined" ? localStorage.getItem("user_id") : null
-  // average rating
   const [avgRating, setAvgRating] = useState<number | null>(null)
   const [ratingCount, setRatingCount] = useState<number>(0)
 
   useEffect(() => {
     if (!id) return
 
+    // fetch movie data from the backend scripts asynchronously
     fetch(`${BASE_URL}/getMovie.php?id=${id}`)
       .then(res => res.json())
       .then(async (data: Movie) => {
         setMovie(data)
 
+        // using try catch to handle errors and fetch data from the TMDb API
         try {
           const tmdbRes = await fetch(
             `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(data.title)}&api_key=${TMDB_API_KEY}`
@@ -55,6 +56,7 @@ export default function MoviePage() {
         }
       })
 
+    // fetching average rating from the backend scripts 
     fetch(`${BASE_URL}/getAverageRating.php?movie_id=${id}`)
       .then(res => res.json())
       .then(data => {
@@ -71,7 +73,7 @@ export default function MoviePage() {
     <div className="max-w-6xl mx-auto py-10 px-4">
       <div className="bg-transparent border-b border-l border-r text-white rounded-xl shadow pb-6 mb-10">
 
-        {/* Poster Image */}
+        {/* displays poster image */}
         {posterPath && (
           <img
             src={hasImageError || !posterPath ? "/fallback_width.png" : posterPath}
@@ -132,7 +134,7 @@ export default function MoviePage() {
                   readonly={!userId}
                 />
               </div>
-
+              {/* checks whether user is logged in or not and if not displays warning message to log in to rate movie */}
               {!userId && (
                 <p className="text-xs text-gray-400 italic mt-1">
                   Log in to rate this movie.
@@ -151,7 +153,7 @@ export default function MoviePage() {
                 </p>
               </div>
             </div>
-
+            
             <div className="mt-auto">
               <BookmarkButton movieId={parseInt(id)} userId={userId ? parseInt(userId) : null} />
             </div>
@@ -170,6 +172,7 @@ export default function MoviePage() {
                   {avgRating} / 5 ({ratingCount} review{ratingCount !== 1 ? 's' : ''})
                 </p>
               )}
+              {/* checks whether user is logged in or not and if not displays warning message to log in to rate movie for different size screens*/}
               {!userId && (
                 <p className="text-xs text-gray-400 italic mt-1">
                   Log in to rate this movie.

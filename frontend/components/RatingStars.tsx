@@ -18,12 +18,14 @@ export default function RatingStars({ movieId, userId, readonly = false }: Props
   useEffect(() => {
     if (!userId) return
   
+    // fetching the rating from the backend scripts
     fetch(`${BASE_URL}/getRating.php?user_id=${userId}&movie_id=${movieId}`)
       .then(res => res.json())
       .then(data => setRating(data.score || 0))
       .catch(err => console.error("Error fetching rating:", err))
   }, [movieId, userId])
 
+  // Function to handle rating
   const handleRating = async (score: number) => {
     if (readonly || !userId) return
 
